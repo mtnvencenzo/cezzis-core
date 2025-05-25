@@ -1278,7 +1278,7 @@ public class ServiceBusMessageSenderTests : ServiceTestBase
             {
                 SendConnectionString = connectionString,
                 Label = "label",
-                QueueOrTopicName = "sbt-test-topic"
+                QueueOrTopicName = "sbt-topic"
             },
             correlationId: correlationId,
             contentType: "text/xml",
