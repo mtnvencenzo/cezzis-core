@@ -18,6 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Cezzi Security Common Framework</PackageTags>
     <PackageIcon>cezzi-security.png</PackageIcon>
+    <PackageIconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-security.png</PackageIconUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

@@ -32,9 +32,6 @@
   <ItemGroup>
     <Content Include=".pack\cezzi-azure-servicebus.png" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include=".pack\package.nuspec" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.13.2" />

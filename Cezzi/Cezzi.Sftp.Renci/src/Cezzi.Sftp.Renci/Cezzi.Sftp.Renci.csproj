@@ -18,6 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Cezzi Sftp Renci Common Framework</PackageTags>
     <PackageIcon>cezzi-sftp-renci.png</PackageIcon>
+    <PackageIconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-sftp-renci.png</PackageIconUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

@@ -18,6 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Cezzi Applications Common Framework</PackageTags>
     <PackageIcon>cezzi-applications.png</PackageIcon>
+    <PackageIconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-applications.png</PackageIconUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>

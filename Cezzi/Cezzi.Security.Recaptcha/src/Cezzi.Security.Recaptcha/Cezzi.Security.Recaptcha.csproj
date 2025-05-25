@@ -18,6 +18,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Cezzi Recaptcha Common Framework</PackageTags>
     <PackageIcon>cezzi-recaptcha.png</PackageIcon>
+    <PackageIconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-recaptcha.png</PackageIconUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
