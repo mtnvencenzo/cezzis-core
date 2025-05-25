@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Caching.Redis", "src\Cezzi.Caching.Redis\Cezzi.Caching.Redis.csproj", "{C403896A-7475-A057-3720-7DDFBED6B700}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-caching-redis-nuget-pipelines.yml = cezzi-caching-redis-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{30258F6F-FF52-47A2-9C0D-5F79DD06C64B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C4D7C000-1F7F-4E08-870A-EBD73F7DF471}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Caching.Redis.Tests", "test\Cezzi.Caching.Redis.Tests\Cezzi.Caching.Redis.Tests.csproj", "{8FEF572F-B951-1048-EFA4-6F05EB827EC0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C403896A-7475-A057-3720-7DDFBED6B700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C403896A-7475-A057-3720-7DDFBED6B700}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C403896A-7475-A057-3720-7DDFBED6B700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C403896A-7475-A057-3720-7DDFBED6B700}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FEF572F-B951-1048-EFA4-6F05EB827EC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FEF572F-B951-1048-EFA4-6F05EB827EC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FEF572F-B951-1048-EFA4-6F05EB827EC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FEF572F-B951-1048-EFA4-6F05EB827EC0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C403896A-7475-A057-3720-7DDFBED6B700} = {30258F6F-FF52-47A2-9C0D-5F79DD06C64B}
+		{8FEF572F-B951-1048-EFA4-6F05EB827EC0} = {C4D7C000-1F7F-4E08-870A-EBD73F7DF471}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3525B7F3-BE2F-4245-AE37-189EE344ABE9}
+	EndGlobalSection
+EndGlobal

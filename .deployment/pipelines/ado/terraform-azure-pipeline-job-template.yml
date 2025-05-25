@@ -1,0 +1,78 @@
+parameters:
+- name: branchType
+  type: string
+- name: serviceConnectionName
+  type: string
+- name: terraformStateResourceGroup
+  type: string
+- name: terraformStateStorageAccount
+  type: string
+
+jobs:
+- deployment: DeployTerraform
+  displayName: 'Deploy Terraform'
+  environment: global
+  timeoutInMinutes: 360
+
+  pool:
+    vmImage: ubuntu-latest
+
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: self
+          persistCredentials: true
+          displayName: 'Checkout repository'
+  
+        - task: TerraformInstaller@1
+          displayName: 'Terraform > Install Latest'
+          inputs:
+            terraformVersion: 'latest'
+
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform > Init'
+          inputs:
+            command: 'init'
+            provider: 'azurerm'
+            ensureBackend: true
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+            backendServiceArm: '${{ parameters.serviceConnectionName }}'
+            backendAzureRmResourceGroupName: '${{ parameters.terraformStateResourceGroup }}'
+            backendAzureRmStorageAccountName: '${{ parameters.terraformStateStorageAccount }}'
+            backendAzureRmContainerName: 'terraform-cezzi'
+            backendAzureRmKey: 'cezzi/terraform.tfstate'
+
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform > Validate'
+          inputs:
+            command: 'validate'
+            provider: 'azurerm'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform > Plan'
+          inputs:
+            command: 'plan'
+            provider: 'azurerm'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+            environmentServiceNameAzureRM: '${{ parameters.serviceConnectionName }}'
+
+        - task: TerraformTaskV4@4
+          displayName: 'Terraform > Apply'
+          condition: and(not(or(failed(), canceled())), eq(${{ parameters.branchType }}, 'main'))
+          inputs:
+            command: 'apply'
+            provider: 'azurerm'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+            environmentServiceNameAzureRM: '${{ parameters.serviceConnectionName }}'
+            commandOptions: '-auto-approve'
+
+        - script: |
+            tag="prod-$(date +%Y%m%dT%H%M%S%z)"
+            git tag $tag
+            git push origin $tag HEAD:refs/heads/main
+          displayName: 'Git Tag'
+          condition: and(not(or(failed(), canceled())), eq(${{ parameters.branchType }}, 'main'))
+          workingDirectory: $(Build.SourcesDirectory)
+

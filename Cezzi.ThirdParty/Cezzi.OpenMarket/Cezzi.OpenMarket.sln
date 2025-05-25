@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.OpenMarket", "src\Cezzi.OpenMarket\Cezzi.OpenMarket.csproj", "{EB0D622F-D140-221E-9850-21FC0346C825}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-thirdparty-openmarket-nuget-pipelines.yml = cezzi-thirdparty-openmarket-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B452A91B-643A-4E5D-A8E2-C9AE923665E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{390D396A-1E7A-413E-8ED0-7021ADAE8B6A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.OpenMarket.Tests", "test\Cezzi.OpenMarket.Tests\Cezzi.OpenMarket.Tests.csproj", "{77F32BA8-2B01-8273-F564-F804579381ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB0D622F-D140-221E-9850-21FC0346C825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB0D622F-D140-221E-9850-21FC0346C825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB0D622F-D140-221E-9850-21FC0346C825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB0D622F-D140-221E-9850-21FC0346C825}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77F32BA8-2B01-8273-F564-F804579381ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77F32BA8-2B01-8273-F564-F804579381ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77F32BA8-2B01-8273-F564-F804579381ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77F32BA8-2B01-8273-F564-F804579381ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EB0D622F-D140-221E-9850-21FC0346C825} = {B452A91B-643A-4E5D-A8E2-C9AE923665E9}
+		{77F32BA8-2B01-8273-F564-F804579381ED} = {390D396A-1E7A-413E-8ED0-7021ADAE8B6A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92F17ADA-C33A-433D-AF41-B18C55C5C44E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Azure.KeyVault", "src\Cezzi.Azure.KeyVault\Cezzi.Azure.KeyVault.csproj", "{E451E994-DDD2-416E-84FC-9E694FD9F05E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-azure-keyvault-nuget-pipelines.yml = cezzi-azure-keyvault-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F3A73760-15B5-4D7F-A172-D6C04FB3819B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{3722995C-638A-4DFB-BDF3-783208A0E44D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Azure.KeyVault.Tests", "test\Cezzi.Azure.KeyVault.Tests\Cezzi.Azure.KeyVault.Tests.csproj", "{C3729C91-3857-401D-8DB4-C3A38ED02A76}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E451E994-DDD2-416E-84FC-9E694FD9F05E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E451E994-DDD2-416E-84FC-9E694FD9F05E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E451E994-DDD2-416E-84FC-9E694FD9F05E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E451E994-DDD2-416E-84FC-9E694FD9F05E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3729C91-3857-401D-8DB4-C3A38ED02A76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3729C91-3857-401D-8DB4-C3A38ED02A76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3729C91-3857-401D-8DB4-C3A38ED02A76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3729C91-3857-401D-8DB4-C3A38ED02A76}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E451E994-DDD2-416E-84FC-9E694FD9F05E} = {F3A73760-15B5-4D7F-A172-D6C04FB3819B}
+		{C3729C91-3857-401D-8DB4-C3A38ED02A76} = {3722995C-638A-4DFB-BDF3-783208A0E44D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {244DAF60-5845-4702-9D76-6731A2DC4B90}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,66 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>./bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
+    <Title>Cezzi Applications Framework</Title>
+    <Description>Cezzi Applications Framework</Description>
+    <License>MIT</License>
+    <Readme>readme.md</Readme>
+    <Authors>Ronaldo Vecchi</Authors>
+    <Company>Cezzis</Company>
+    <Product>Cezzi Core Framework</Product>
+    <Copyright>2025 Cezzis.com | All rights reserved</Copyright>
+    <RepositoryUrl>https://github.com/mtnvencenzo/Cezzi</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mtnvencenzo/Cezzi</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Cezzi Applications Common Framework</PackageTags>
+    <PackageIcon>cezzi-applications.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".pack\cezzi-applications.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".pack\package.nuspec" />
+    <None Include=".pack\cezzi-applications.pdn" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="2.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.13.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Text\Resources\RandomSources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RandomSources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Text\Resources\RandomSources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RandomSources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

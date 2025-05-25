@@ -1,0 +1,30 @@
+name: CICD-Cezzi-Azure-Storage-Table
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [Cezzi.Azure/Cezzi.Azure.Storage.Table/**, .github/workflows/cezzi-azure-storage-table-cicd.yaml]
+  push:
+    branches: [main]
+    paths: [Cezzi.Azure/Cezzi.Azure.Storage.Table/**, .github/workflows/cezzi-azure-storage-table-cicd.yaml]
+
+  workflow_dispatch:
+
+jobs:
+  nuget-pack-and-push:
+    uses: mtnvencenzo/Workflows/.github/workflows/nuget-pack-and-push.yaml@main
+    with:
+      working_directory: 'Cezzi.Azure/Cezzi.Azure.Storage.Table'
+      environment_name: 'prd'
+      allow_push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      dotnet_version: '9.x'
+      nuget_file_path: './../../Nuget.Config'
+      github_nuget_feed_name: 'github-mtnvencenzo'
+      github_nuget_feed_source: 'https://nuget.pkg.github.com/mtnvencenzo/index.json'
+      project_path: './Cezzi.Azure.Storage.Table.sln'
+      test_project_path: './Cezzi.Azure.Storage.Table.sln'
+      publish_project_path: './src/Cezzi.Azure.Storage.Table/Cezzi.Azure.Storage.Table.csproj'
+      artifact_name: 'cezzi-azure-storage-table-nuget'
+      publish_directory_name: 'nuget'
+    secrets:
+      github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN }} 

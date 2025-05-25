@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>./bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
+    <Title>Cezzi OpenApi Framework</Title>
+    <Description>Cezzi OpenApi Framework</Description>
+    <License>MIT</License>
+    <Readme>readme.md</Readme>
+    <Authors>Ronaldo Vecchi</Authors>
+    <Company>Cezzis</Company>
+    <Product>Cezzi Core Framework</Product>
+    <Copyright>2025 Cezzis.com | All rights reserved</Copyright>
+    <RepositoryUrl>https://github.com/mtnvencenzo/Cezzi</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mtnvencenzo/Cezzi</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Cezzi OpenApi Common Framework</PackageTags>
+    <PackageIcon>cezzi-openapi.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".pack\cezzi-openapi.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".pack\cezzi-openapi.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".pack\cezzi-openapi.pdn" />
+    <None Include=".pack\package.nuspec" />
+  </ItemGroup>
+
+  <ItemGroup>
+   <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.13.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AK" xml:space="preserve">
+    <value>99501_99950</value>
+  </data>
+  <data name="AL" xml:space="preserve">
+    <value>35004_36925</value>
+  </data>
+  <data name="AR" xml:space="preserve">
+    <value>71601_72959</value>
+  </data>
+  <data name="AR1" xml:space="preserve">
+    <value>75502_75502</value>
+  </data>
+  <data name="AZ" xml:space="preserve">
+    <value>85001_86556</value>
+  </data>
+  <data name="CA" xml:space="preserve">
+    <value>90001_96162</value>
+  </data>
+  <data name="CO" xml:space="preserve">
+    <value>80001_81658</value>
+  </data>
+  <data name="CT" xml:space="preserve">
+    <value>6001_6389</value>
+  </data>
+  <data name="CT1" xml:space="preserve">
+    <value>6401_6928</value>
+  </data>
+  <data name="DC" xml:space="preserve">
+    <value>20001_20039</value>
+  </data>
+  <data name="DC1" xml:space="preserve">
+    <value>20042_20599</value>
+  </data>
+  <data name="DC2" xml:space="preserve">
+    <value>20799_20799</value>
+  </data>
+  <data name="DE" xml:space="preserve">
+    <value>19701_19980</value>
+  </data>
+  <data name="FL" xml:space="preserve">
+    <value>32004_34997</value>
+  </data>
+  <data name="GA" xml:space="preserve">
+    <value>30001_31999</value>
+  </data>
+  <data name="GA1" xml:space="preserve">
+    <value>39901_39901</value>
+  </data>
+  <data name="HI" xml:space="preserve">
+    <value>96701_96898</value>
+  </data>
+  <data name="IA" xml:space="preserve">
+    <value>50001_52809</value>
+  </data>
+  <data name="IA1" xml:space="preserve">
+    <value>68119_68120</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>83201_83876</value>
+  </data>
+  <data name="IL" xml:space="preserve">
+    <value>60001_62999</value>
+  </data>
+  <data name="IN" xml:space="preserve">
+    <value>46001_47997</value>
+  </data>
+  <data name="KS" xml:space="preserve">
+    <value>66002_67954</value>
+  </data>
+  <data name="KY" xml:space="preserve">
+    <value>40003_42788</value>
+  </data>
+  <data name="LA" xml:space="preserve">
+    <value>70001_71232</value>
+  </data>
+  <data name="LA1" xml:space="preserve">
+    <value>71234_71497</value>
+  </data>
+  <data name="MA" xml:space="preserve">
+    <value>1001_2791</value>
+  </data>
+  <data name="MA1" xml:space="preserve">
+    <value>5501_5544</value>
+  </data>
+  <data name="MD" xml:space="preserve">
+    <value>20331_20331</value>
+  </data>
+  <data name="MD1" xml:space="preserve">
+    <value>20335_20797</value>
+  </data>
+  <data name="MD2" xml:space="preserve">
+    <value>20812_21930</value>
+  </data>
+  <data name="ME" xml:space="preserve">
+    <value>3901_4992</value>
+  </data>
+  <data name="MI" xml:space="preserve">
+    <value>48001_49971</value>
+  </data>
+  <data name="MN" xml:space="preserve">
+    <value>55001_56763</value>
+  </data>
+  <data name="MO" xml:space="preserve">
+    <value>63001_65899</value>
+  </data>
+  <data name="MS" xml:space="preserve">
+    <value>38601_39776</value>
+  </data>
+  <data name="MS1" xml:space="preserve">
+    <value>71233_71233</value>
+  </data>
+  <data name="MT" xml:space="preserve">
+    <value>59001_59937</value>
+  </data>
+  <data name="NC" xml:space="preserve">
+    <value>27006_28909</value>
+  </data>
+  <data name="ND" xml:space="preserve">
+    <value>58001_58856</value>
+  </data>
+  <data name="NE" xml:space="preserve">
+    <value>68001_68118</value>
+  </data>
+  <data name="NE1" xml:space="preserve">
+    <value>68122_69367</value>
+  </data>
+  <data name="NH" xml:space="preserve">
+    <value>3031_3897</value>
+  </data>
+  <data name="NJ" xml:space="preserve">
+    <value>7001_8989</value>
+  </data>
+  <data name="NM" xml:space="preserve">
+    <value>87001_88441</value>
+  </data>
+  <data name="NV" xml:space="preserve">
+    <value>88901_89883</value>
+  </data>
+  <data name="NY" xml:space="preserve">
+    <value>6390_6390</value>
+  </data>
+  <data name="NY1" xml:space="preserve">
+    <value>10001_14975</value>
+  </data>
+  <data name="OH" xml:space="preserve">
+    <value>43001_45999</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>73001_73199</value>
+  </data>
+  <data name="OK1" xml:space="preserve">
+    <value>73401_74966</value>
+  </data>
+  <data name="OR" xml:space="preserve">
+    <value>97001_97920</value>
+  </data>
+  <data name="PA" xml:space="preserve">
+    <value>15001_19640</value>
+  </data>
+  <data name="RI" xml:space="preserve">
+    <value>2801_2940</value>
+  </data>
+  <data name="SC" xml:space="preserve">
+    <value>29001_29948</value>
+  </data>
+  <data name="SD" xml:space="preserve">
+    <value>57001_57799</value>
+  </data>
+  <data name="TN" xml:space="preserve">
+    <value>37010_38589</value>
+  </data>
+  <data name="TX" xml:space="preserve">
+    <value>73301_73301</value>
+  </data>
+  <data name="TX1" xml:space="preserve">
+    <value>75001_75501</value>
+  </data>
+  <data name="TX2" xml:space="preserve">
+    <value>75503_79999</value>
+  </data>
+  <data name="TX3" xml:space="preserve">
+    <value>88510_88589</value>
+  </data>
+  <data name="UT" xml:space="preserve">
+    <value>84001_84784</value>
+  </data>
+  <data name="VA" xml:space="preserve">
+    <value>20040_20041</value>
+  </data>
+  <data name="VA1" xml:space="preserve">
+    <value>20040_20167</value>
+  </data>
+  <data name="VA2" xml:space="preserve">
+    <value>20042_20042</value>
+  </data>
+  <data name="VA3" xml:space="preserve">
+    <value>22001_24658</value>
+  </data>
+  <data name="VT" xml:space="preserve">
+    <value>5001_5495</value>
+  </data>
+  <data name="VT1" xml:space="preserve">
+    <value>5601_5907</value>
+  </data>
+  <data name="WA" xml:space="preserve">
+    <value>98001_99403</value>
+  </data>
+  <data name="WI" xml:space="preserve">
+    <value>53001_54990</value>
+  </data>
+  <data name="WV" xml:space="preserve">
+    <value>24701_26886</value>
+  </data>
+  <data name="WY" xml:space="preserve">
+    <value>82001_83128</value>
+  </data>
+</root>

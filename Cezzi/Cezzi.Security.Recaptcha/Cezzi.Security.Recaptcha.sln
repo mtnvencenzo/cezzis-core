@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Security.Recaptcha", "src\Cezzi.Security.Recaptcha\Cezzi.Security.Recaptcha.csproj", "{E1916FCA-AA0C-E21E-8667-D24312275C54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-security-recaptcha-nuget-pipelines.yml = cezzi-security-recaptcha-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F54EBFE-3D35-4EAA-A379-8F05C6CC5312}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{921EEAA1-9A3A-4FB4-B76B-9EFD95D67364}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Security.Recaptcha.Tests", "test\Cezzi.Security.Recaptcha.Tests\Cezzi.Security.Recaptcha.Tests.csproj", "{F906E54F-75B7-F647-6ED6-C4CF747957F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1916FCA-AA0C-E21E-8667-D24312275C54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1916FCA-AA0C-E21E-8667-D24312275C54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1916FCA-AA0C-E21E-8667-D24312275C54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1916FCA-AA0C-E21E-8667-D24312275C54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F906E54F-75B7-F647-6ED6-C4CF747957F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F906E54F-75B7-F647-6ED6-C4CF747957F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F906E54F-75B7-F647-6ED6-C4CF747957F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F906E54F-75B7-F647-6ED6-C4CF747957F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E1916FCA-AA0C-E21E-8667-D24312275C54} = {2F54EBFE-3D35-4EAA-A379-8F05C6CC5312}
+		{F906E54F-75B7-F647-6ED6-C4CF747957F7} = {921EEAA1-9A3A-4FB4-B76B-9EFD95D67364}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D4ABB5B6-B84A-4346-8726-9432D43B344F}
+	EndGlobalSection
+EndGlobal

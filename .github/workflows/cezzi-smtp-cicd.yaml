@@ -1,0 +1,31 @@
+name: CICD-Cezzi-Smtp
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [Cezzi/Cezzi.Smtp/**, .github/workflows/cezzi-smtp-cicd.yaml]
+  push:
+    branches: [main]
+    paths: [Cezzi/Cezzi.Smtp/**, .github/workflows/cezzi-smtp-cicd.yaml]
+
+  workflow_dispatch:
+
+jobs:
+  nuget-pack-and-push:
+    uses: mtnvencenzo/Workflows/.github/workflows/nuget-pack-and-push.yaml@main
+    with:
+      working_directory: 'Cezzi/Cezzi.Smtp'
+      environment_name: prd
+      allow_push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+      dotnet_version: '9.x'
+      nuget_file_path: './../../Nuget.Config'
+      github_nuget_feed_name: 'github-mtnvencenzo'
+      github_nuget_feed_source: 'https://nuget.pkg.github.com/mtnvencenzo/index.json'
+      project_path: './Cezzi.Smtp.sln'
+      test_project_path: './Cezzi.Smtp.sln'
+      publish_project_path: './src/Cezzi.Smtp/Cezzi.Smtp.csproj'
+      artifact_name: 'cezzi-smtp-nuget'
+      setup_files: '' # Must be a string representation of a json array with items separated by ', '
+      publish_directory_name: 'nuget'
+    secrets:
+      github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN }} 

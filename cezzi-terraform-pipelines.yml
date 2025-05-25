@@ -1,0 +1,38 @@
+variables:
+  serviceConnectionName: 'sc-vec-eus-default-svc-principal-001'
+  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    branchType: main
+  ${{ if ne(variables['Build.SourceBranchName'], 'main') }}: 
+    branchType: pull
+
+name: $(Build.DefinitionName)_$(branchType)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - .deployment/*
+    - cezzi-terraform-pipelines.yml
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+##########################
+### Terraform
+##########################
+
+- stage: Terraform
+  displayName: 'Terraform > Deploy'
+  jobs:
+  - template: '.deployment/pipelines/ado/terraform-azure-pipeline-job-template.yml'
+    parameters:
+      branchType: variables['branchType']
+      terraformStateResourceGroup: 'rg-vec-eus-administration-001'
+      terraformStateStorageAccount: 'stveceusterraformstat001'
+      serviceConnectionName: '$(serviceConnectionName)'
+
+
+

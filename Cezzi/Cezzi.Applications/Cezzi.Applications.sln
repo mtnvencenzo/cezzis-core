@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Applications", "src\Cezzi.Applications\Cezzi.Applications.csproj", "{309C8D9B-3FFA-3619-4CD2-72836D20E138}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{550C7ACA-2D1A-4C9E-BC48-6CD8EC9A3D47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Applications.Tests", "test\Cezzi.Applications.Tests\Cezzi.Applications.Tests.csproj", "{71E4610E-6D52-98CA-04BF-3812BC6FCE9D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{04FDA196-3247-4789-B6F9-1837F1D42435}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-applications-nuget-pipelines.yml = cezzi-applications-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{309C8D9B-3FFA-3619-4CD2-72836D20E138}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{309C8D9B-3FFA-3619-4CD2-72836D20E138}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{309C8D9B-3FFA-3619-4CD2-72836D20E138}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{309C8D9B-3FFA-3619-4CD2-72836D20E138}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71E4610E-6D52-98CA-04BF-3812BC6FCE9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71E4610E-6D52-98CA-04BF-3812BC6FCE9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71E4610E-6D52-98CA-04BF-3812BC6FCE9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71E4610E-6D52-98CA-04BF-3812BC6FCE9D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{309C8D9B-3FFA-3619-4CD2-72836D20E138} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{71E4610E-6D52-98CA-04BF-3812BC6FCE9D} = {550C7ACA-2D1A-4C9E-BC48-6CD8EC9A3D47}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {925A69CF-D44B-42A9-9428-368B5802CE8E}
+	EndGlobalSection
+EndGlobal

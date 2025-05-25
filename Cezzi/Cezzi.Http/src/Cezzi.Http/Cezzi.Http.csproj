@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>./bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
+    <Title>Cezzi Http Framework</Title>
+    <Description>Cezzi Http Framework</Description>
+    <License>MIT</License>
+    <Readme>readme.md</Readme>
+    <Authors>Ronaldo Vecchi</Authors>
+    <Company>Cezzis</Company>
+    <Product>Cezzi Core Framework</Product>
+    <Copyright>2025 Cezzis.com | All rights reserved</Copyright>
+    <RepositoryUrl>https://github.com/mtnvencenzo/Cezzi</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mtnvencenzo/Cezzi</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Cezzi Http Common Framework</PackageTags>
+    <PackageIcon>cezzi-http.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".pack\cezzi-http.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".pack\cezzi-http.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".pack\cezzi-http.pdn" />
+    <None Include=".pack\package.nuspec" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ConfigureAwaitChecker.Analyzer" Version="5.0.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="2.0.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.13.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

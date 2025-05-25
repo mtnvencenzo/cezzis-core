@@ -1,0 +1,30 @@
+name: CICD-Cezzi-SendGrid
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [Cezzi.ThirdParty/Cezzi.SendGrid/**, .github/workflows/cezzi-sendgrid-cicd.yaml]
+  push:
+    branches: [main]
+    paths: [Cezzi.ThirdParty/Cezzi.SendGrid/**, .github/workflows/cezzi-sendgrid-cicd.yaml]
+  workflow_dispatch:
+
+jobs:
+  nuget-pack-and-push:
+    uses: mtnvencenzo/Workflows/.github/workflows/nuget-pack-and-push.yaml@main
+    with:
+      working_directory: 'Cezzi.ThirdParty/Cezzi.SendGrid'
+      environment_name: prd
+      allow_push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+      dotnet_version: '9.x'
+      nuget_file_path: './../../Nuget.Config'
+      github_nuget_feed_name: 'github-mtnvencenzo'
+      github_nuget_feed_source: 'https://nuget.pkg.github.com/mtnvencenzo/index.json'
+      project_path: './Cezzi.SendGrid.sln'
+      test_project_path: './Cezzi.SendGrid.sln'
+      publish_project_path: './src/Cezzi.SendGrid/Cezzi.SendGrid.csproj'
+      artifact_name: 'cezzi-sendgrid-nuget'
+      setup_files: '' # Must be a string representation of a json array with items separated by ', '
+      publish_directory_name: 'nuget'
+    secrets:
+      github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN }} 

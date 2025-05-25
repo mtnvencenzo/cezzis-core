@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>./bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
+    <Title>Cezzi Smtp Framework</Title>
+    <Description>Cezzi Smtp Framework</Description>
+    <License>MIT</License>
+    <Readme>readme.md</Readme>
+    <Authors>Ronaldo Vecchi</Authors>
+    <Company>Cezzis</Company>
+    <Product>Cezzi Core Framework</Product>
+    <Copyright>2025 Cezzis.com | All rights reserved</Copyright>
+    <RepositoryUrl>https://github.com/mtnvencenzo/Cezzi</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mtnvencenzo/Cezzi</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Cezzi Smtp Common Framework</PackageTags>
+    <PackageIcon>cezzi-smtp.png</PackageIcon>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".pack\cezzi-smtp.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".pack\cezzi-smtp.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include=".pack\cezzi-smtp.pdn" />
+    <None Include=".pack\package.nuspec" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.13.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

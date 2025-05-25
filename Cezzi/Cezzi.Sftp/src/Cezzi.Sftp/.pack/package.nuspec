@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Cezzi.Sftp</id>
+    <version>1.0.6</version>
+    <authors>Ronaldo Vecchi</authors>
+    <projectUrl>https://dev.azure.com/vecchi/Latest</projectUrl>
+    <repository type="git" url="https://vecchi@dev.azure.com/vecchi/Latest/_git/Cezzi" branch="main" />
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <icon>images\cezzi-sftp.png</icon>
+    <iconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-sftp.png</iconUrl>
+    <description>Base sftp client library for building Sftp client implementations</description>
+    <readme>docs\readme.md</readme>
+    <license type="expression">MIT</license>
+    <copyright>Copyright 2023 Ronaldo Vecchi</copyright>
+    <tags>Cezzi Framework Sftp</tags>
+  </metadata>
+  <files>
+    <file src="..\bin\Release\net9.0\Cezzi.Sftp.dll" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.Sftp.xml" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.Sftp.pdb" target="lib\net9.0" />
+
+    <file src="..\.pack\cezzi-sftp.png" target="images\" />
+    <file src="..\readme.md" target="docs\" />
+  </files>
+</package>

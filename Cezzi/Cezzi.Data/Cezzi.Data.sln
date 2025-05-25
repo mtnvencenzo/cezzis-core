@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Data", "src\Cezzi.Data\Cezzi.Data.csproj", "{EF9B771E-2522-FD34-3719-4B83F554DF16}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-data-nuget-pipelines.yml = cezzi-data-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{15E3295C-A9BF-43E4-B094-E0BE613190D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{223E54B7-E03D-452E-9B01-1078C0AD285A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Data.Tests", "test\Cezzi.Data.Tests\Cezzi.Data.Tests.csproj", "{199ED81A-8978-6A99-4D4F-E19C601AC8D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF9B771E-2522-FD34-3719-4B83F554DF16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF9B771E-2522-FD34-3719-4B83F554DF16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF9B771E-2522-FD34-3719-4B83F554DF16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF9B771E-2522-FD34-3719-4B83F554DF16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{199ED81A-8978-6A99-4D4F-E19C601AC8D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{199ED81A-8978-6A99-4D4F-E19C601AC8D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{199ED81A-8978-6A99-4D4F-E19C601AC8D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{199ED81A-8978-6A99-4D4F-E19C601AC8D8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EF9B771E-2522-FD34-3719-4B83F554DF16} = {15E3295C-A9BF-43E4-B094-E0BE613190D2}
+		{199ED81A-8978-6A99-4D4F-E19C601AC8D8} = {223E54B7-E03D-452E-9B01-1078C0AD285A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {64DAB2BB-21C2-458C-9CF3-4A756381B900}
+	EndGlobalSection
+EndGlobal

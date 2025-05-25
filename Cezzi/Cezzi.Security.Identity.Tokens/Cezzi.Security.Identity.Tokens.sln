@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Security.Identity.Tokens", "src\Cezzi.Security.Identity.Tokens\Cezzi.Security.Identity.Tokens.csproj", "{78C6639F-F42F-3825-CF0D-502AE34B1764}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-security-identity-tokens-nuget-pipelines.yml = cezzi-security-identity-tokens-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{22F34A59-F0A4-443E-BFF9-E345E176735D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{327AAD85-3FA1-4A6C-8E2B-88DE5AF1B3E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Security.Identity.Tokens.Tests", "test\Cezzi.Security.Identity.Tokens.Tests\Cezzi.Security.Identity.Tokens.Tests.csproj", "{FFF82843-E606-2E84-24AB-F427E601C7DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78C6639F-F42F-3825-CF0D-502AE34B1764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78C6639F-F42F-3825-CF0D-502AE34B1764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78C6639F-F42F-3825-CF0D-502AE34B1764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78C6639F-F42F-3825-CF0D-502AE34B1764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF82843-E606-2E84-24AB-F427E601C7DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF82843-E606-2E84-24AB-F427E601C7DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF82843-E606-2E84-24AB-F427E601C7DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF82843-E606-2E84-24AB-F427E601C7DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{78C6639F-F42F-3825-CF0D-502AE34B1764} = {22F34A59-F0A4-443E-BFF9-E345E176735D}
+		{FFF82843-E606-2E84-24AB-F427E601C7DA} = {327AAD85-3FA1-4A6C-8E2B-88DE5AF1B3E0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40322B6B-E33B-4C8F-97EA-0B2FA61ACEE8}
+	EndGlobalSection
+EndGlobal

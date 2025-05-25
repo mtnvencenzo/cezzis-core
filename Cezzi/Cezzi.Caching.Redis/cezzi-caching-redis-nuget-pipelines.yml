@@ -1,0 +1,158 @@
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  disable.coverage.autogenerate: true
+  nugetIconStorageAccount: 'stvecglocezzinuget001'
+  nugetIconStorageContainer: 'nuget'
+  serviceConnectionName: 'sc-vec-eus-default-svc-principal-001'
+  ${{ if eq(variables['Build.SourceBranchName'], 'main') }}:
+    branchType: main
+  ${{ if ne(variables['Build.SourceBranchName'], 'main') }}: 
+    branchType: pull
+
+name: $(Build.DefinitionName)_$(branchType)_$(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - Cezzi/Cezzi.Caching.Redis/*
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+
+##########################
+### BUILD AND Test
+##########################
+
+- stage: BuildAndPack
+  displayName: 'Build and Nuget > Pack'
+  jobs:
+  - job: BuildAndPack
+    displayName: 'Build / Test / Package'
+
+    pool:
+      vmImage: windows-latest
+
+    steps:
+    - task: UseDotNet@2
+      displayName: 'Use NetCore 9.0.x'
+      inputs:
+        packageType: 'sdk'
+        version: '9.0.x'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore'
+      inputs:
+        command: 'restore'
+        projects: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/Cezzi.Caching.Redis.sln'
+        feedsToUse: 'config'
+        nugetConfigPath: './Nuget.Config'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Build'
+      inputs:
+        command: 'build'
+        projects: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/Cezzi.Caching.Redis.sln'
+        arguments: '--configuration $(buildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'Test'
+      inputs:
+        command: 'test'
+        projects: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/test/**/*[Tt]ests/*.csproj'
+        arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -v:q -l:"console;verbosity=normal" --no-build'
+        publishTestResults: false
+
+    - task: reportgenerator@5
+      displayName: 'Generate Code Coverage'
+      inputs:
+        reports: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/**/*.cobertura.xml'
+        targetdir: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/CodeCoverage'
+        reporttypes: 'HtmlInline_AzurePipelines;Cobertura;Badges'
+        classfilters: '+*;'
+
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish Code Coverage'
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/CodeCoverage/Cobertura.xml'
+        reportDirectory: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/CodeCoverage'
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Nuget Install'
+      inputs:
+        versionSpec: '6.0.3'
+
+    - task: NuGetCommand@2
+      displayName: 'Nuget Pack: Cezzi.Caching.Redis'
+      inputs:
+        command: pack
+        packagesToPack: $(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/src/Cezzi.Caching.Redis/.pack/package.nuspec
+        packDestination: '$(Build.ArtifactStagingDirectory)/nugets'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: Nugets'
+      condition: and(succeeded(), eq(variables['branchType'], 'main'))
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/nugets'
+        ArtifactName: 'Nugets'
+
+
+##########################
+### Nuget Push
+##########################
+
+
+- stage: NugetPush
+  displayName: 'Nuget > Push'
+  dependsOn: BuildAndPack
+  condition: and(not(or(failed(), canceled())), eq(variables['branchType'], 'main'))
+  jobs:
+  - job: NugetPush
+    displayName: 'Push Nuget Packages'
+    condition: succeeded()
+
+    pool:
+      vmImage: windows-latest
+
+    steps:
+    - download: current  # refers to artifacts published by current pipeline
+      artifact: Nugets
+      displayName: Download artifact
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Nuget Install'
+      inputs:
+        versionSpec: '6.0.3'
+
+    # ~~~~~~~~~~~~~~~~~~
+    # Cezzi.Caching.Redis
+    # ~~~~~~~~~~~~~~~~~~
+
+    - task: NuGetCommand@2
+      displayName: 'Nuget Push: Cezzi.Caching.Redis'
+      condition: and(succeeded(), eq(variables['branchType'], 'main'))
+      inputs:
+        command: 'push'
+        packagesToPush: '$(Pipeline.Workspace)\Nugets\Cezzi.Caching.Redis.*.*.*.nupkg'
+        nuGetFeedType: 'internal'
+        publishVstsFeed: 'global'
+        allowPackageConflicts: true
+    
+    - task: AzureFileCopy@5
+      displayName: Copy icon Cezzi.Caching.Redis to storage account
+      condition: and(succeeded(), eq(variables['branchType'], 'main'))
+      inputs:
+        SourcePath: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Caching.Redis/src/Cezzi.Caching.Redis/.pack/cezzi-redis.png'
+        azureSubscription: '$(serviceConnectionName)'
+        Destination: AzureBlob
+        storage: '$(nugetIconStorageAccount)'
+        ContainerName: '$(nugetIconStorageContainer)'
+        AdditionalArgumentsForBlobCopy: |
+          --recursive=true `
+          --overwrite=true

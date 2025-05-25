@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Cezzi.Applications</id>
+    <version>1.0.7</version>
+    <authors>Ronaldo Vecchi</authors>
+    <projectUrl>https://dev.azure.com/vecchi/Latest</projectUrl>
+    <repository type="git" url="https://vecchi@dev.azure.com/vecchi/Latest/_git/Cezzi" branch="main" />
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <icon>images\cezzi-applications.png</icon>
+    <iconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-applications.png</iconUrl>
+    <description>Cezzi Applications Framework</description>
+    <readme>docs\readme.md</readme>
+    <license type="expression">MIT</license>
+    <copyright>Copyright 2023 Ronaldo Vecchi</copyright>
+    <tags>Cezzi Applications Common Framework</tags>
+    <dependencies>
+      <group>
+        <dependency id="System.Reflection.Emit" version="4.7.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\bin\Release\net9.0\Cezzi.Applications.dll" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.Applications.xml" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.Applications.pdb" target="lib\net9.0" />
+
+    <file src="..\.pack\cezzi-applications.png" target="images\" />
+    <file src="..\readme.md" target="docs\" />
+  </files>
+</package>

@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Cezzi.OpenApi</id>
+    <version>1.0.7</version>
+    <authors>Ronaldo Vecchi</authors>
+    <projectUrl>https://dev.azure.com/vecchi/Latest</projectUrl>
+    <repository type="git" url="https://vecchi@dev.azure.com/vecchi/Latest/_git/Cezzi" branch="main" />
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <icon>images\cezzi-openapi.png</icon>
+    <iconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-openapi.png</iconUrl>
+    <description>Basic open api separation support</description>
+    <readme>docs\readme.md</readme>
+    <license type="expression">MIT</license>
+    <copyright>Copyright 2023 Ronaldo Vecchi</copyright>
+    <tags>Cezzi Framework OpenAPi</tags>
+    <dependencies>
+      <group>
+        <dependency id="Microsoft.Extensions.Configuration" version="9.0.2" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.Configuration.Binder" version="9.0.2" exclude="Build,Analyzers" />
+        <dependency id="Swashbuckle.AspNetCore" version="7.3.1" exclude="Build,Analyzers" />
+        <dependency id="Swashbuckle.AspNetCore.Annotations" version="7.3.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\bin\Release\net9.0\Cezzi.OpenApi.dll" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.OpenApi.xml" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.OpenApi.pdb" target="lib\net9.0" />
+
+    <file src="..\.pack\cezzi-openapi.png" target="images\" />
+    <file src="..\readme.md" target="docs\" />
+  </files>
+</package>

@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Azure.Storage.Blob", "src\Cezzi.Azure.Storage.Blob\Cezzi.Azure.Storage.Blob.csproj", "{D95FCF1D-6D07-CAD3-5BEA-65F2911AB375}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		cezzi-azure-storage-blob-nuget-pipelines.yml = cezzi-azure-storage-blob-nuget-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3C11B48D-1334-4C20-8592-EA84D6DD046A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BF237D6E-9F26-4324-A27F-61B710BF0DCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Azure.Storage.Blob.Tests", "test\Cezzi.Azure.Storage.Blob.Tests\Cezzi.Azure.Storage.Blob.Tests.csproj", "{E83A05AF-91CD-4D07-B384-C04875850636}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D95FCF1D-6D07-CAD3-5BEA-65F2911AB375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D95FCF1D-6D07-CAD3-5BEA-65F2911AB375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D95FCF1D-6D07-CAD3-5BEA-65F2911AB375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D95FCF1D-6D07-CAD3-5BEA-65F2911AB375}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E83A05AF-91CD-4D07-B384-C04875850636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E83A05AF-91CD-4D07-B384-C04875850636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E83A05AF-91CD-4D07-B384-C04875850636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E83A05AF-91CD-4D07-B384-C04875850636}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D95FCF1D-6D07-CAD3-5BEA-65F2911AB375} = {3C11B48D-1334-4C20-8592-EA84D6DD046A}
+		{E83A05AF-91CD-4D07-B384-C04875850636} = {BF237D6E-9F26-4324-A27F-61B710BF0DCD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87A551C1-4248-462A-B7D5-94D9BC9E22FA}
+	EndGlobalSection
+EndGlobal

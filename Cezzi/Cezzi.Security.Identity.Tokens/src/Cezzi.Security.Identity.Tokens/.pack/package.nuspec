@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Cezzi.Security.Identity.Tokens</id>
+    <version>1.0.6</version>
+    <authors>Ronaldo Vecchi</authors>
+    <projectUrl>https://dev.azure.com/vecchi/Latest</projectUrl>
+    <repository type="git" url="https://vecchi@dev.azure.com/vecchi/Latest/_git/Cezzi" branch="main" />
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <icon>images\cezzi-security-tok.png</icon>
+    <iconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-security-tok.png</iconUrl>
+    <description>Cezzi general identity token and jwt token functionality</description>
+    <readme>docs\readme.md</readme>
+    <license type="expression">MIT</license>
+    <copyright>Copyright 2023 Ronaldo Vecchi</copyright>
+    <tags>Cezzi Security Identity Tokens Jwt</tags>
+    <dependencies>
+      <group>
+        <dependency id="Microsoft.IdentityModel.JsonWebTokens" version="8.6.1" exclude="Build,Analyzers" />
+        <dependency id="System.IdentityModel.Tokens.Jwt" version="8.6.1" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\bin\Release\net9.0\Cezzi.Security.Identity.Tokens.dll" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.Security.Identity.Tokens.xml" target="lib\net9.0" />
+    <file src="..\bin\Release\net9.0\Cezzi.Security.Identity.Tokens.pdb" target="lib\net9.0" />
+
+    <file src="..\.pack\cezzi-security-tok.png" target="images\" />
+    <file src="..\readme.md" target="docs\" />
+  </files>
+</package>
