@@ -13,8 +13,8 @@
     <Company>Cezzis</Company>
     <Product>Cezzi Core Framework</Product>
     <Copyright>2025 Cezzis.com | All rights reserved</Copyright>
-    <RepositoryUrl>https://github.com/mtnvencenzo/Cezzi</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/mtnvencenzo/Cezzi</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mtnvencenzo/cezzis-core</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mtnvencenzo/cezzis-core</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Cezzi Recaptcha Common Framework</PackageTags>
     <PackageIcon>cezzi-recaptcha.png</PackageIcon>
