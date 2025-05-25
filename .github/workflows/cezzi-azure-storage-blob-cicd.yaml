@@ -1,4 +1,4 @@
-name: CICD-Cezzi-Azure-Storage-Blob
+name: cicd-cezzi-azure-storage-blob
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   nuget-pack-and-push:
-    uses: mtnvencenzo/Workflows/.github/workflows/nuget-pack-and-push.yaml@main
+    uses: mtnvencenzo/workflows/.github/workflows/nuget-pack-and-push.yaml@main
     with:
       working_directory: 'Cezzi.Azure/Cezzi.Azure.Storage.Blob'
       environment_name: prd

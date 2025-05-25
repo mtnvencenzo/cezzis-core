@@ -1,4 +1,4 @@
-name: CICD-Cezzi-Azure-KeyVault
+name: cicd-cezzi-azure-keyvault
 
 on:
   pull_request:
@@ -13,7 +13,7 @@ on:
 
 jobs:
   nuget-pack-and-push:
-    uses: mtnvencenzo/Workflows/.github/workflows/nuget-pack-and-push.yaml@main
+    uses: mtnvencenzo/workflows/.github/workflows/nuget-pack-and-push.yaml@main
     with:
       working_directory: 'Cezzi.Azure/Cezzi.Azure.KeyVault'
       environment_name: 'prd'

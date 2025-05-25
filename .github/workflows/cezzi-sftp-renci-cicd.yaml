@@ -1,4 +1,4 @@
-name: CICD-Cezzi-Sftp-Renci
+name: cicd-cezzi-sftp-renci
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   nuget-pack-and-push:
-    uses: mtnvencenzo/Workflows/.github/workflows/nuget-pack-and-push.yaml@main
+    uses: mtnvencenzo/workflows/.github/workflows/nuget-pack-and-push.yaml@main
     with:
       working_directory: 'Cezzi/Cezzi.Sftp.Renci'
       environment_name: prd
