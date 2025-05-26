@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.OpenApi", "src\Cezzi.OpenApi\Cezzi.OpenApi.csproj", "{D841DE5D-83C4-0737-6720-D7ADAD2DDD41}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		cezzi-openapi-nuget-pipelines.yml = cezzi-openapi-nuget-pipelines.yml
+		..\..\.github\workflows\cezzi-openapi-cicd.yaml = ..\..\.github\workflows\cezzi-openapi-cicd.yaml
+		..\..\Nuget.Config = ..\..\Nuget.Config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{80F5A654-33C7-4F1F-9CC8-D449D2FA29B3}"

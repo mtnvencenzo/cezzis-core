@@ -28,3 +28,20 @@ jobs:
       publish_directory_name: 'nuget'
     secrets:
       github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN }} 
+      
+  upload_nuget_image:
+    uses: mtnvencenzo/workflows/.github/workflows/azure-blob-upload.yaml@main
+    needs: nuget-pack-and-push
+    with:
+      working_directory: 'Cezzi.ThirdParty/Cezzi.OpenMarket/src/Cezzi.OpenMarket/.pack'
+      environment_name: prd
+      allow_deploy: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+      arm_client_id: ${{ vars.ARM_CLIENT_ID }}
+      arm_subscription_id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      arm_tenant_id: ${{ vars.ARM_TENANT_ID }}
+      storage_account_name: stvecglocezzinuget001
+      container_name: nuget
+      pattern: 'cezzi-openmarket.png'
+      source_directory: '.'
+    secrets:
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}

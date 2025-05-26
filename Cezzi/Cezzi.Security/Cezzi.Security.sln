@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Security", "src\Cezzi.Security\Cezzi.Security.csproj", "{907567C4-A52E-97C8-84DB-086A2D19C8DC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		cezzi-security-nuget-pipelines.yml = cezzi-security-nuget-pipelines.yml
+		..\..\.github\workflows\cezzi-security-cicd.yaml = ..\..\.github\workflows\cezzi-security-cicd.yaml
+		..\..\Nuget.Config = ..\..\Nuget.Config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0EF6393F-1565-4DC0-837C-903A89CCAD0D}"

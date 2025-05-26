@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.OpenMarket", "src\Cezzi.OpenMarket\Cezzi.OpenMarket.csproj", "{EB0D622F-D140-221E-9850-21FC0346C825}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		cezzi-thirdparty-openmarket-nuget-pipelines.yml = cezzi-thirdparty-openmarket-nuget-pipelines.yml
+		..\..\.github\workflows\cezzi-openmarket-cicd.yaml = ..\..\.github\workflows\cezzi-openmarket-cicd.yaml
+		..\..\Nuget.Config = ..\..\Nuget.Config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B452A91B-643A-4E5D-A8E2-C9AE923665E9}"

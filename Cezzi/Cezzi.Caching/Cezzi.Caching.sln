@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Caching", "src\Cezzi.Caching\Cezzi.Caching.csproj", "{F10A8E94-ACF7-AB3F-9C49-7E86A3773760}"
 EndProject
@@ -13,7 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Caching.Tests", "test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{613925DB-6416-4AC0-8364-F4449330BEC7}"
 	ProjectSection(SolutionItems) = preProject
-		cezzi-caching-nuget-pipelines.yml = cezzi-caching-nuget-pipelines.yml
+		..\..\.github\workflows\cezzi-caching-cicd.yaml = ..\..\.github\workflows\cezzi-caching-cicd.yaml
+		..\..\Nuget.Config = ..\..\Nuget.Config
 	EndProjectSection
 EndProject
 Global

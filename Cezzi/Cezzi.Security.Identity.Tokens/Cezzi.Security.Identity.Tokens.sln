@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Security.Identity.Tokens", "src\Cezzi.Security.Identity.Tokens\Cezzi.Security.Identity.Tokens.csproj", "{78C6639F-F42F-3825-CF0D-502AE34B1764}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		cezzi-security-identity-tokens-nuget-pipelines.yml = cezzi-security-identity-tokens-nuget-pipelines.yml
+		..\..\.github\workflows\cezzi-security-identity-tokens-cicd.yaml = ..\..\.github\workflows\cezzi-security-identity-tokens-cicd.yaml
+		..\..\Nuget.Config = ..\..\Nuget.Config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{22F34A59-F0A4-443E-BFF9-E345E176735D}"

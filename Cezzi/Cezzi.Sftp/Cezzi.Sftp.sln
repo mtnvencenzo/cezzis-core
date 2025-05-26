@@ -1,13 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Sftp", "src\Cezzi.Sftp\Cezzi.Sftp.csproj", "{C982438D-618F-8D79-210D-8F0FCFD295C4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
-		cezzi-sftp-nuget-pipelines.yml = cezzi-sftp-nuget-pipelines.yml
+		..\..\.github\workflows\cezzi-sftp-cicd.yaml = ..\..\.github\workflows\cezzi-sftp-cicd.yaml
+		..\..\Nuget.Config = ..\..\Nuget.Config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2308B9F8-A4DB-4015-B996-2BF6DA592271}"

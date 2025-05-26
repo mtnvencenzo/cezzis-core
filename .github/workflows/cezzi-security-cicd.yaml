@@ -32,6 +32,7 @@ jobs:
 
   upload_nuget_image:
     uses: mtnvencenzo/workflows/.github/workflows/azure-blob-upload.yaml@main
+    needs: nuget-pack-and-push
     with:
       working_directory: 'Cezzi/Cezzi.Security/src/Cezzi.Security/.pack'
       environment_name: prd

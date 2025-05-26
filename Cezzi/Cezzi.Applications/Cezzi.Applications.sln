@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35825.156 d17.13
+VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Applications", "src\Cezzi.Applications\Cezzi.Applications.csproj", "{309C8D9B-3FFA-3619-4CD2-72836D20E138}"
 EndProject
@@ -13,7 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cezzi.Applications.Tests", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{04FDA196-3247-4789-B6F9-1837F1D42435}"
 	ProjectSection(SolutionItems) = preProject
-		cezzi-applications-nuget-pipelines.yml = cezzi-applications-nuget-pipelines.yml
+		..\..\.github\workflows\cezzi-applications-cicd.yaml = ..\..\.github\workflows\cezzi-applications-cicd.yaml
+		..\..\Nuget.Config = ..\..\Nuget.Config
 	EndProjectSection
 EndProject
 Global
