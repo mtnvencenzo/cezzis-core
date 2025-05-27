@@ -1,4 +1,4 @@
-name: cicd-cezzi-storageaccont-terraform
+name: cicd-cezzi-storageaccount-terraform
 
 on:
   pull_request:
