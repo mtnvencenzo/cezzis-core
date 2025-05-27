@@ -36,7 +36,7 @@ jobs:
             command: 'init'
             provider: 'azurerm'
             ensureBackend: true
-            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.terraform'
             backendServiceArm: '${{ parameters.serviceConnectionName }}'
             backendAzureRmResourceGroupName: '${{ parameters.terraformStateResourceGroup }}'
             backendAzureRmStorageAccountName: '${{ parameters.terraformStateStorageAccount }}'
@@ -48,14 +48,14 @@ jobs:
           inputs:
             command: 'validate'
             provider: 'azurerm'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.terraform'
 
         - task: TerraformTaskV4@4
           displayName: 'Terraform > Plan'
           inputs:
             command: 'plan'
             provider: 'azurerm'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.terraform'
             environmentServiceNameAzureRM: '${{ parameters.serviceConnectionName }}'
 
         - task: TerraformTaskV4@4
@@ -64,7 +64,7 @@ jobs:
           inputs:
             command: 'apply'
             provider: 'azurerm'
-            workingDirectory: '$(System.DefaultWorkingDirectory)/.deployment/iac/terraform'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/.terraform'
             environmentServiceNameAzureRM: '${{ parameters.serviceConnectionName }}'
             commandOptions: '-auto-approve'
 

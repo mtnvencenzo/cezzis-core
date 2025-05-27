@@ -13,8 +13,8 @@ trigger:
     - main
   paths:
     include:
-    - .deployment/*
-    - cezzi-terraform-pipelines.yml
+    - .ado/*
+    - .terraform/*
 
 pool:
   vmImage: ubuntu-latest
@@ -27,7 +27,7 @@ stages:
 - stage: Terraform
   displayName: 'Terraform > Deploy'
   jobs:
-  - template: '.deployment/pipelines/ado/terraform-azure-pipeline-job-template.yml'
+  - template: '.ado/terraform-azure-pipeline-job-template.yml'
     parameters:
       branchType: variables['branchType']
       terraformStateResourceGroup: 'rg-vec-eus-administration-001'
