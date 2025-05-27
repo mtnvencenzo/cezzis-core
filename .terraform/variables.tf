@@ -1,35 +1,35 @@
 
 variable "domain" {
-  type = string
+  type        = string
   description = "Domain name. Use only lowercase letters and numbers"
-  default = "cezzi"
+  default     = "cezzi"
 }
 
 variable "environment" {
-  type    = string
+  type        = string
   description = "Environment name, e.g. 'dev' or 'stage' or 'prod'"
-  default = "glo"
+  default     = "glo"
 }
 
 variable "location" {
-  type    = string
+  type        = string
   description = "Azure region where to create resources."
-  default = "East US"
+  default     = "East US"
 }
 
 variable "region" {
-  type	= string
+  type    = string
   default = "eus"
 }
 
 variable "sub" {
-  type    = string
+  type        = string
   description = "Subscription short identitifer to be used in resource naming"
-  default = "vec"
+  default     = "vec"
 }
 
 variable "sequence" {
-  type    = string
+  type        = string
   description = "The sequence number of the resource typically starting with 001"
-  default = "001"
+  default     = "001"
 }
