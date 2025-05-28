@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\readme.md" />
     <None Include=".pack\package.nuspec" />
   </ItemGroup>
 
@@ -50,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="readme.md">
+    <None Update="../../readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

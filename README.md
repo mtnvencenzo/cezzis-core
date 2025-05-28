@@ -1,79 +1,124 @@
+# Cezzi Core Framework
 
-# Environment Setup
-- Install Visual Studio
-- Install VS Code
-- Install Chocolatey
-    - https://chocolatey.org/install
-- Install Terraform
-    - choco install terraform
-- Install Git
-    - Make sure core.autocrlf-true
-- Set Git Config
-``` shell
-    $ git config --global user.name "John Doe"
-    $ git config --global user.email "johndoe@mailinator.com"
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mtnvencenzo/cezzis-core/main/.readme/cezzi.png" alt="Cezzi Core Framework" width="200" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/mtnvencenzo/cezzis-core/actions"><img src="https://github.com/mtnvencenzo/cezzis-core/actions/workflows/cezzi-applications-cicd.yaml/badge.svg" alt="Build Status"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+  <a href="https://github.com/mtnvencenzo/cezzis-core/pkgs/nuget"><img src="https://img.shields.io/badge/GitHub%20Packages-Cezzi-blue?logo=github" alt="GitHub Packages"></a>
+</p>
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Environment Setup](#environment-setup)
+- [Core Components](#core-components)
+  - [Applications](#applications)
+  - [Caching](#caching)
+  - [Data](#data)
+  - [HTTP](#http)
+  - [OpenAPI](#openapi)
+  - [Security](#security)
+  - [SFTP](#sftp)
+  - [SMTP](#smtp)
+- [Azure Integration](#azure-integration)
+  - [Storage](#azure-storage)
+  - [Service Bus](#azure-service-bus)
+  - [Key Vault](#azure-key-vault)
+- [Third-Party Services](#third-party-services)
+  - [SendGrid](#sendgrid)
+  - [OpenMarket](#openmarket)
+- [Getting Started](#getting-started)
+- [Contributing](#contributing)
+- [License](#license)
+- [Author](#author)
+
+## Overview
+
+Cezzi Core Framework is a comprehensive collection of .NET libraries designed to simplify and standardize common development tasks. The framework provides a set of well-structured, maintainable, and reusable components that follow best practices and modern development patterns.
+
+## Environment Setup
+
+Before getting started with the framework, please review our [Environment Setup Guide](.readme/env-setup.md) for detailed instructions on configuring your development environment, including:
+- Required tools and SDKs
+- Development environment configuration
+- Build and test setup
+- Contributing guidelines
+
+## Core Components
+
+### Applications
+- **Cezzi.Applications**: Base library for building robust .NET applications
+
+### Caching
+- **Cezzi.Caching**: Core caching abstractions and implementations
+- **Cezzi.Caching.Redis**: Redis caching integration
+
+### Data
+- **Cezzi.Data**: Data access and manipulation utilities
+
+### HTTP
+- **Cezzi.Http**: HTTP client and request handling utilities
+
+### OpenAPI
+- **Cezzi.OpenApi**: OpenAPI/Swagger integration and utilities
+
+### Security
+- **Cezzi.Security**: Security and encryption utilities
+- **Cezzi.Security.Identity.Tokens**: Identity and token management
+- **Cezzi.Security.Pgp**: PGP encryption support
+- **Cezzi.Security.Recaptcha**: Google reCAPTCHA integration
+
+### SFTP
+- **Cezzi.Sftp**: SFTP client abstractions
+- **Cezzi.Sftp.Renci**: Renci SSH.NET-based SFTP implementation
+
+### SMTP
+- **Cezzi.Smtp**: SMTP email client utilities
+
+## Azure Integration
+
+### Azure Storage
+- **Cezzi.Azure.Storage.Table**: Azure Table Storage integration
+- **Cezzi.Azure.Storage.Blob**: Azure Blob Storage integration
+
+### Azure Service Bus
+- **Cezzi.Azure.ServiceBus**: Azure Service Bus messaging integration
+
+### Azure Key Vault
+- **Cezzi.Azure.KeyVault**: Azure Key Vault secrets management
+
+## Third-Party Services
+
+### SendGrid
+- **Cezzi.SendGrid**: Email service integration with SendGrid
+
+### OpenMarket
+- **Cezzi.OpenMarket**: SMS service integration with OpenMarket
+
+## Getting Started
+
+1. Choose the components you need for your project
+2. Install the required NuGet packages from GitHub Packages
+3. Follow the component-specific documentation for setup and usage
+
+Example installation:
+```shell
+dotnet add package Cezzi.Applications --source "github"
+dotnet add package Cezzi.Caching.Redis --source "github"
+dotnet add package Cezzi.Security --source "github"
 ```
-- Install nvm (https://github.com/nvm-sh/nvm#install--update-script)
-    - Create ``.bash_profile`` file in your home directory (Typcally `C:\Users\YourUserName`)
-    - Open Git Bash and run this line: 
-        - `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.4/install.sh | bash`
-            - If you see an error about bash being not recognized, you may need to add `C:\Program Files\Git\bin` (or whatever your path is) to your emvironment variables.
-        - Once install is complete run this line to start using nvm
 
-        -   >export NVM_DIR="$HOME/.nvm"
-            >[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-            >[ -s "$NVM_DIR/bash_completion.sh" ] && \. "$NVM_DIR/bash_completion.sh"
+## Contributing
 
-        - Verify that nvm is installed by running this command:
-            - `nvm -v`
-        - Install Node
-            - Open Git Bash and run: `nvm install node # "node is an alias for the latest version"`
-        - Verify Installation: `node -v`
-        - Setup SSH key for Git (optional)
-            - https://learn.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate?view=azure-devops
-        - Docker
-            - Make sure virtualization is enabled
-                - Task manager > Performance tab > You should see 'Virtualization: Enabled'
-            - Install WSL
-                - Open PowerShell or Windows Command Prompt in administrator mode and run: `wsl --install` (https://learn.microsoft.com/en-us/windows/wsl/install)
-                - Open windows features and enable:
-                    - Virtual Machine Platform
-                    - Windows Hypervisor Platform
-                    - Windows Subsystem for Linux
-                - From PowerShell enable WSL-1 by running the following command:
-                    - `dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart`
-                - Download the Linux Kernel installer from MS (https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-4--download-the-linux-kernel-update-package)
-                - Run the Linux Kernel Installer
-                - From PowerShell set WSL version to 2:
-                    - `wsl --set-default-version 2`
-            - Download and run docker desktop for windows (https://docs.docker.com/desktop/install/windows-install/)
-            - Add docker-user to your non-admin login (only needed if having a separate admin account to install stuff)
-                - Open in PowerShell as admin
-                - Run this command:
-                    - `net localgroup docker-users "domain\YourUserName" /ADD`
-                - Restart your computer.
-            - If any UIs need to access Devops Artifacts for internal npm packages you need to setup `vsts-npm-auth`
-                -   > npm install -g vsts-npm-auth
-                    > vsts-npm-auth -config .npmrc
-                - Login prompt should open up and you should login with your credentials.
-            - Install Yarn:
-                - `npm install -g yarn`
-            - Install Azure CLI
-                - Can be done by command line or via an installer.
-                    - Installer can be found on the Azure CLI website: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows?tabs=azure-cli
-                - Alternately, Open PowerShell as an Admin and run this:
-                    - `$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri https://aka.ms/installazurecliwindows -OutFile .\AzureCLI.msi; Start-Process msiexec.exe -Wait -ArgumentList '/I AzureCLI.msi /quiet'; Remove-Item .\AzureCLI.msi`
-            - Install Azure Functions Core Tools
-                - `choco install azure-functions-core-tools -y`
-				- After install open Visual Studio and navigate to the Tools > Options > Projects and Solutions > Azure Functions option and click 'Check for updates'
+We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-- Git Bash Integration in Visual Studio
-  - Add Git Bash to Visual Studio Terminal
-    - Open the Tools > Options > Environment > Terminal Menu option and add a new terminal pointing to the git sh.exe cli
-      ![Adding](./.readme-assets/adding-git-bash-to-visualstudio-terminal.png)
-    - Then select the View > Terminal menu and pick your new Git Bash terminal.
-      ![Adding](./.readme-assets/using-git-bash-in-visualstudio-terminal.png)
+## License
 
-  - Add Git Bash to Visual Studio External Tools
-    - Open the Tools > External Tools Menu option and add a new terminal pointing to the git git-bash.exe cli
-      ![Adding](./.readme-assets/adding-git-bash-to-visualstudio-external-tools.png)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+- **Ronaldo Vecchi** - [GitHub](https://github.com/mtnvencenzo)
