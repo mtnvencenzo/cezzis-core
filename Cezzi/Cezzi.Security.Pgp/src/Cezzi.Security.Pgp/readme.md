@@ -42,5 +42,5 @@ namespace PgpStuff
 
 <br/>
 
-![nuspec](../../../.readme-assets/encryption.jpg)
+![nuspec](../../../.readme/encryption.jpg)
 
