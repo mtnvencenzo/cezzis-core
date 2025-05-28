@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\readme.md" />
     <None Include=".pack\cezzi-security-pgp.pdn" />
     <None Include=".pack\package.nuspec" />
   </ItemGroup>

@@ -34,6 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\readme.md" />
     <None Include=".pack\cezzi-sftp-renci.pdn" />
     <None Include=".pack\package.nuspec" />
   </ItemGroup>

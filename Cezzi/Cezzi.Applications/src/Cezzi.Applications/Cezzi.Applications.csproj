@@ -24,6 +24,7 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="..\..\readme.md" />
     <None Include=".pack\cezzi-applications.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

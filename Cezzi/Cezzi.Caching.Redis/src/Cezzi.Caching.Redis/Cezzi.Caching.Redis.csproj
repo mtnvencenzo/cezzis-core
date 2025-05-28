@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\readme.md" />
     <None Include=".pack\cezzi-redis.pdn" />
     <None Include=".pack\package.nuspec" />
   </ItemGroup>
