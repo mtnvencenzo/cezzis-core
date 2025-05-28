@@ -50,7 +50,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Update="readme.md">
+    <None Update="../../readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
