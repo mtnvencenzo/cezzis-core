@@ -25,6 +25,7 @@
   </PropertyGroup>
   
   <ItemGroup>
+    <None Include="..\..\readme.md" />
     <None Include=".pack\cezzi-azure-keyvault.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
