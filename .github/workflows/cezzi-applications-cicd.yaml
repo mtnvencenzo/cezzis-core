@@ -28,7 +28,7 @@ jobs:
       setup_files: '' # Must be a string representation of a json array with items separated by ', '
       publish_directory_name: 'nuget'
     secrets:
-      github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN }}
+      github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN_READWRITE }}
       
   upload_nuget_image:
     uses: mtnvencenzo/workflows/.github/workflows/azure-blob-upload.yaml@main
