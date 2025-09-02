@@ -1,4 +1,4 @@
-name: cicd-cezzi-security
+name: cicd-cezzi-otel
 
 on:
   pull_request:
