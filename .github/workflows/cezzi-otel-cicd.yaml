@@ -27,6 +27,7 @@ jobs:
       artifact_name: 'cezzi-otel-nuget'
       setup_files: '' # Must be a string representation of a json array with items separated by ', '
       publish_directory_name: 'nuget'
+      pre_release: '-rc1'
     secrets:
       github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN_READWRITE }} 
 

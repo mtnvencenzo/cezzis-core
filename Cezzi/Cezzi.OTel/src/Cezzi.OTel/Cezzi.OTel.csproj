@@ -22,7 +22,6 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
-    <VersionSuffix>rc</VersionSuffix> 
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\..\readme.md" />
