@@ -21,7 +21,7 @@
     <PackageIcon>cezzi-otel.png</PackageIcon>
     <PackageIconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-otel.png</PackageIconUrl>
     <PackageIcon>cezzi-otel.png</PackageIcon>
-    <PackageReadmeFile>../../readme.md</PackageReadmeFile>
+    <PackageReadmeFile>../../../readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
@@ -41,7 +41,7 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="../../readme.md">
+    <None Update="../../../readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
