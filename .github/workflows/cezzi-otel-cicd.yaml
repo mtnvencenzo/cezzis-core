@@ -1,0 +1,48 @@
+name: cicd-cezzi-security
+
+on:
+  pull_request:
+    branches: [main]
+    paths: [Cezzi/Cezzi.OTel/**, .github/workflows/cezzi-otel-cicd.yaml]
+  push:
+    branches: [main]
+    paths: [Cezzi/Cezzi.OTel/**, .github/workflows/cezzi-otel-cicd.yaml]
+
+  workflow_dispatch:
+
+jobs:
+  nuget-pack-and-push:
+    uses: mtnvencenzo/workflows/.github/workflows/nuget-pack-and-push.yaml@main
+    with:
+      working_directory: 'Cezzi/Cezzi.OTel'
+      environment_name: prd
+      allow_push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+      dotnet_version: '9.x'
+      nuget_file_path: './../../Nuget.Config'
+      github_nuget_feed_name: 'github-mtnvencenzo'
+      github_nuget_feed_source: 'https://nuget.pkg.github.com/mtnvencenzo/index.json'
+      project_path: './Cezzi.OTel.sln'
+      test_project_path: './Cezzi.OTel.sln'
+      publish_project_path: './src/Cezzi.OTel/Cezzi.OTel.csproj'
+      artifact_name: 'cezzi-otel-nuget'
+      setup_files: '' # Must be a string representation of a json array with items separated by ', '
+      publish_directory_name: 'nuget'
+    secrets:
+      github_packages_pat_token: ${{ secrets.GH_PACKAGES_PAT_TOKEN_READWRITE }} 
+
+  upload_nuget_image:
+    uses: mtnvencenzo/workflows/.github/workflows/azure-blob-upload.yaml@main
+    needs: nuget-pack-and-push
+    with:
+      working_directory: 'Cezzi/Cezzi.OTel/src/Cezzi.OTel/.pack'
+      environment_name: prd
+      allow_deploy: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
+      arm_client_id: ${{ vars.ARM_CLIENT_ID }}
+      arm_subscription_id: ${{ vars.ARM_SUBSCRIPTION_ID }}
+      arm_tenant_id: ${{ vars.ARM_TENANT_ID }}
+      storage_account_name: stvecglocezzinuget001
+      container_name: nuget
+      pattern: 'cezzi-otel.png'
+      source_directory: '.'
+    secrets:
+      arm_client_secret: ${{ secrets.ARM_CLIENT_SECRET }}

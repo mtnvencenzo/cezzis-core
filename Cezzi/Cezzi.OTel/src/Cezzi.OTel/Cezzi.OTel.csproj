@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <DocumentationFile>./bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
+    <Title>Cezzi Open Telemetry Framework</Title>
+    <Description>Cezzi Open Telemetry Framework</Description>
+    <License>MIT</License>
+    <Readme>readme.md</Readme>
+    <Authors>Ronaldo Vecchi</Authors>
+    <Company>Cezzis</Company>
+    <Product>Cezzi Core Framework</Product>
+    <Copyright>2025 Cezzis.com | All rights reserved</Copyright>
+    <RepositoryUrl>https://github.com/mtnvencenzo/cezzis-core</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/mtnvencenzo/cezzis-core</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Cezzi Open Telemetry Common Framework</PackageTags>
+    <PackageIcon>cezzi-otel.png</PackageIcon>
+    <PackageIconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-otel.png</PackageIconUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\readme.md" />
+    <None Include=".pack\cezzi-otel.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.10.0-beta.1" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Text\Resources\RandomSources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RandomSources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Text\Resources\RandomSources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RandomSources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="../../readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>
