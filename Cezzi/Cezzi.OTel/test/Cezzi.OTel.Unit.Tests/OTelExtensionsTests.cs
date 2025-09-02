@@ -27,7 +27,7 @@ public class OTelExtensionsTests
         // Verify meter provider setup
         app.Services.GetRequiredService<OpenTelemetry.Trace.TracerProvider>();
         app.Services.GetRequiredService<IOptions<OpenTelemetry.Instrumentation.AspNetCore.AspNetCoreTraceInstrumentationOptions>>();
-        app.Services.GetRequiredService<IOptions<OpenTelemetry.Instrumentation.GrpcNetClient.GrpcClientTraceInstrumentationOptions>>();
+        app.Services.GetRequiredService<IOptions<OpenTelemetry.Instrumentation.GrpcNetClient.GrpcClientInstrumentationOptions>>();
         app.Services.GetRequiredService<IOptions<OpenTelemetry.Instrumentation.Http.HttpClientTraceInstrumentationOptions>>();
         var otlpExporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("traces");
         otlpExporter.Endpoint.Should().Be("http://localhost:4317"); // Default value when not configured
