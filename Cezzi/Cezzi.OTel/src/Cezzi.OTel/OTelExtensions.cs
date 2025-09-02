@@ -19,7 +19,7 @@ using OpenTelemetry.Trace;
 public static class OTelExtensions
 {
     /// <summary>
-    /// Adds open telelemtry to the application pipeline
+    /// Adds OpenTelemetry to the application pipeline
     /// </summary>
     /// <param name="builder"></param>
     /// <param name="serviceName"></param>
@@ -62,9 +62,9 @@ public static class OTelExtensions
             {
                 tracing
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-                        serviceName: serviceName ?? otelOptions.ServiceName ?? Assembly.GetExecutingAssembly().GetName().Name,
+                        serviceName: serviceName ?? otelOptions.ServiceName ?? (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Name,
                         serviceNamespace: serviceNamespace ?? otelOptions.ServiceNamespace,
-                        serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown",
+                        serviceVersion: (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version?.ToString() ?? "unknown",
                         serviceInstanceId: Environment.MachineName))
                     .AddHttpClientInstrumentation()
                     .AddGrpcClientInstrumentation()
@@ -81,30 +81,31 @@ public static class OTelExtensions
 
                 traceOptions?.Sources?.ForEach(s => tracing.AddSource(s));
 
-                if (Uri.IsWellFormedUriString(endpoint, UriKind.Absolute))
+                tracing.AddOtlpExporter("traces", options =>
                 {
-                    tracing.AddOtlpExporter("traces", options =>
+                    if (Uri.IsWellFormedUriString(endpoint, UriKind.Absolute))
                     {
                         options.Endpoint = new Uri(endpoint);
-                        options.Headers = headers;
-                        options.ExportProcessorType = traceOptions?.OtlpExporter?.ExportProcessorType ?? options.ExportProcessorType;
-                        options.TimeoutMilliseconds = int.TryParse(timeoutMilliseconds, out var parsedTimeoutMilliseconds)
-                            ? parsedTimeoutMilliseconds
-                            : 10000;
-                        options.Protocol = Enum.TryParse<OtlpExportProtocol>(protocol, true, out var parsedProtocol)
-                            ? parsedProtocol
-                            : OtlpExportProtocol.Grpc;
-                        options.BatchExportProcessorOptions = traceOptions?.OtlpExporter?.BatchExportProcessorOptions ?? options.BatchExportProcessorOptions;
-                    });
-                }
+                    }
+
+                    if (Enum.TryParse<OtlpExportProtocol>(protocol, true, out var parsedProtocol))
+                    {
+                        options.Protocol = parsedProtocol;
+                    }
+
+                    options.Headers = headers;
+                    options.ExportProcessorType = traceOptions?.OtlpExporter?.ExportProcessorType ?? options.ExportProcessorType;
+                    options.TimeoutMilliseconds = int.TryParse(timeoutMilliseconds, out var parsedTimeoutMilliseconds)
+                        ? parsedTimeoutMilliseconds
+                        : 10000;
+                    options.BatchExportProcessorOptions = traceOptions?.OtlpExporter?.BatchExportProcessorOptions ?? options.BatchExportProcessorOptions;
+                });
 
                 if (traceOptions?.AddConsoleExporter ?? false)
                 {
                     tracing.AddConsoleExporter();
                 }
             });
-
-        var services = builder.Services;
 
         return builder;
     }
@@ -128,31 +129,34 @@ public static class OTelExtensions
             {
                 metrics
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-                        serviceName: serviceName ?? otelOptions.ServiceName ?? Assembly.GetExecutingAssembly().GetName().Name,
+                        serviceName: serviceName ?? otelOptions.ServiceName ?? (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Name,
                         serviceNamespace: serviceNamespace ?? otelOptions.ServiceNamespace,
-                        serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown",
+                        serviceVersion: (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version?.ToString() ?? "unknown",
                         serviceInstanceId: Environment.MachineName))
                     .AddRuntimeInstrumentation()
                     .AddAspNetCoreInstrumentation();
 
                 metricOptions?.Meters?.ForEach(x => metrics.AddMeter(x));
 
-                if (Uri.IsWellFormedUriString(endpoint, UriKind.Absolute))
+                metrics.AddOtlpExporter("metrics", options =>
                 {
-                    metrics.AddOtlpExporter("metrics", options =>
+                    if (Uri.IsWellFormedUriString(endpoint, UriKind.Absolute))
                     {
                         options.Endpoint = new Uri(endpoint);
-                        options.Headers = headers;
-                        options.ExportProcessorType = metricOptions?.OtlpExporter?.ExportProcessorType ?? options.ExportProcessorType;
-                        options.TimeoutMilliseconds = int.TryParse(timeoutMilliseconds, out var parsedTimeoutMilliseconds)
-                            ? parsedTimeoutMilliseconds
-                            : 10000;
-                        options.Protocol = Enum.TryParse<OtlpExportProtocol>(protocol, true, out var parsedProtocol)
-                            ? parsedProtocol
-                            : OtlpExportProtocol.Grpc;
-                        options.BatchExportProcessorOptions = metricOptions?.OtlpExporter?.BatchExportProcessorOptions ?? options.BatchExportProcessorOptions;
-                    });
-                }
+                    }
+
+                    if (Enum.TryParse<OtlpExportProtocol>(protocol, true, out var parsedProtocol))
+                    {
+                        options.Protocol = parsedProtocol;
+                    }
+
+                    options.Headers = headers;
+                    options.ExportProcessorType = metricOptions?.OtlpExporter?.ExportProcessorType ?? options.ExportProcessorType;
+                    options.TimeoutMilliseconds = int.TryParse(timeoutMilliseconds, out var parsedTimeoutMilliseconds)
+                        ? parsedTimeoutMilliseconds
+                        : 10000;
+                    options.BatchExportProcessorOptions = metricOptions?.OtlpExporter?.BatchExportProcessorOptions ?? options.BatchExportProcessorOptions;
+                });
 
                 if (metricOptions?.AddConsoleExporter ?? false)
                 {
@@ -180,29 +184,32 @@ public static class OTelExtensions
         builder.Logging.AddOpenTelemetry(logging =>
         {
             logging.SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(
-                serviceName: serviceName ?? otelOptions.ServiceName ?? Assembly.GetExecutingAssembly().GetName().Name,
+                serviceName: serviceName ?? otelOptions.ServiceName ?? (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Name,
                 serviceNamespace: serviceNamespace ?? otelOptions.ServiceNamespace,
-                serviceVersion: Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "unknown",
+                serviceVersion: (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version?.ToString() ?? "unknown",
                 serviceInstanceId: Environment.MachineName));
             logging.IncludeFormattedMessage = logOptions?.IncludeFormattedMessage ?? false;
             logging.IncludeScopes = logOptions?.IncludeScopes ?? false;
 
-            if (Uri.IsWellFormedUriString(endpoint, UriKind.Absolute))
+            logging.AddOtlpExporter("logs", options =>
             {
-                logging.AddOtlpExporter("logs", options =>
+                if (Uri.IsWellFormedUriString(endpoint, UriKind.Absolute))
                 {
                     options.Endpoint = new Uri(endpoint);
-                    options.Headers = headers;
-                    options.ExportProcessorType = logOptions?.OtlpExporter?.ExportProcessorType ?? options.ExportProcessorType;
-                    options.TimeoutMilliseconds = int.TryParse(timeoutMilliseconds, out var parsedTimeoutMilliseconds)
-                        ? parsedTimeoutMilliseconds
-                        : 10000;
-                    options.Protocol = Enum.TryParse<OtlpExportProtocol>(protocol, true, out var parsedProtocol)
-                        ? parsedProtocol
-                        : OtlpExportProtocol.Grpc;
-                    options.BatchExportProcessorOptions = logOptions?.OtlpExporter?.BatchExportProcessorOptions ?? options.BatchExportProcessorOptions;
-                });
-            }
+                }
+
+                if (Enum.TryParse<OtlpExportProtocol>(protocol, true, out var parsedProtocol))
+                {
+                    options.Protocol = parsedProtocol;
+                }
+
+                options.Headers = headers;
+                options.ExportProcessorType = logOptions?.OtlpExporter?.ExportProcessorType ?? options.ExportProcessorType;
+                options.TimeoutMilliseconds = int.TryParse(timeoutMilliseconds, out var parsedTimeoutMilliseconds)
+                    ? parsedTimeoutMilliseconds
+                    : 10000;
+                options.BatchExportProcessorOptions = logOptions?.OtlpExporter?.BatchExportProcessorOptions ?? options.BatchExportProcessorOptions;
+            });
 
             if (logOptions?.AddConsoleExporter ?? false)
             {
@@ -214,8 +221,10 @@ public static class OTelExtensions
     }
 
     /// <summary>Removing slashes from http/protobuf in ENV specific value</summary>
-    private static string GetOtlpProtocolValue(string config, string specificEnv, string defaultEnv) =>
-        GetOtlpValue(config, specificEnv?.Replace("/", string.Empty), defaultEnv);
+    private static string GetOtlpProtocolValue(string config, string specificEnv, string defaultEnv)
+    {
+        return GetOtlpValue(config, specificEnv, defaultEnv)?.Replace("/", string.Empty);
+    }
 
     private static string GetOtlpValue(string config, string specificEnv, string defaultEnv) => config?.ToString()
         ?? Environment.GetEnvironmentVariable(specificEnv)

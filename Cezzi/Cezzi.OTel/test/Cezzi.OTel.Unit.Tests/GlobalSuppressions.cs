@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>", Scope = "module")]
+[assembly: SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "Test method names follow Given_When_Then for readability.", Scope = "module")]

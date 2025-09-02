@@ -24,6 +24,7 @@ dotnet add package Cezzi.OTel
 
 ```csharp
 using Cezzi.OTel;
+using Microsoft.Extensions.Hosting;
 
 var builder = Host.CreateApplicationBuilder();
 builder.AddApplicationOpenTelemetry();

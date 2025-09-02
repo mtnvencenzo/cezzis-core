@@ -17,7 +17,6 @@ public class OTelExtensionsTests
         // arrange
         var builder = Host.CreateApplicationBuilder();
         builder.Configuration.Sources.Clear();
-        builder.Configuration.AddEnvironmentVariables();
 
         // act
         builder.AddApplicationOpenTelemetry();
@@ -30,18 +29,18 @@ public class OTelExtensionsTests
         app.Services.GetRequiredService<IOptions<OpenTelemetry.Instrumentation.GrpcNetClient.GrpcClientInstrumentationOptions>>();
         app.Services.GetRequiredService<IOptions<OpenTelemetry.Instrumentation.Http.HttpClientTraceInstrumentationOptions>>();
         var otlpExporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("traces");
-        otlpExporter.Endpoint.Should().Be("http://localhost:4317"); // Default value when not configured
+        otlpExporter.Endpoint.Should().Be(new Uri("http://localhost:4317")); // Default value when not configured
 
         // Verify meter provider setup
         app.Services.GetRequiredService<OpenTelemetry.Metrics.MeterProvider>();
         app.Services.GetRequiredService<IOptions<OpenTelemetry.Instrumentation.Runtime.RuntimeInstrumentationOptions>>();
         otlpExporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("metrics");
-        otlpExporter.Endpoint.Should().Be("http://localhost:4317"); // Default value when not configured
+        otlpExporter.Endpoint.Should().Be(new Uri("http://localhost:4317")); // Default value when not configured
 
         // Verify logger provider setup
         app.Services.GetRequiredService<OpenTelemetry.Logs.LoggerProvider>();
         otlpExporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("logs");
-        otlpExporter.Endpoint.Should().Be("http://localhost:4317"); // Default value when not configured
+        otlpExporter.Endpoint.Should().Be(new Uri("http://localhost:4317")); // Default value when not configured
     }
 
     [Fact]
@@ -50,7 +49,6 @@ public class OTelExtensionsTests
         // arrange
         var builder = Host.CreateApplicationBuilder();
         builder.Configuration.Sources.Clear();
-        builder.Configuration.AddEnvironmentVariables();
         builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
         {
             { "OTel:Traces:OtlpExporter:Endpoint", "http://localhost:1001" },
@@ -73,21 +71,21 @@ public class OTelExtensionsTests
         app.Services.GetRequiredService<OpenTelemetry.Trace.TracerProvider>();
         var tracesExporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("traces");
         tracesExporter.Should().NotBeNull();
-        tracesExporter.Endpoint.Should().Be("http://localhost:1001");
+        tracesExporter.Endpoint.Should().Be(new Uri("http://localhost:1001"));
         tracesExporter.Protocol.Should().Be(OtlpExportProtocol.Grpc);
         tracesExporter.Headers.Should().Be("auth1=test1");
 
         // Verify meter provider setup
         app.Services.GetRequiredService<OpenTelemetry.Metrics.MeterProvider>();
         var metricsExporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("metrics");
-        metricsExporter.Endpoint.Should().Be("http://localhost:1002");
+        metricsExporter.Endpoint.Should().Be(new Uri("http://localhost:1002"));
         metricsExporter.Protocol.Should().Be(OtlpExportProtocol.HttpProtobuf);
         metricsExporter.Headers.Should().Be("auth2=test2");
 
         // Verify logger provider setup
         app.Services.GetRequiredService<OpenTelemetry.Logs.LoggerProvider>();
         var logsExporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("logs");
-        logsExporter.Endpoint.Should().Be("http://localhost:1003");
+        logsExporter.Endpoint.Should().Be(new Uri("http://localhost:1003"));
         logsExporter.Protocol.Should().Be(OtlpExportProtocol.Grpc);
         logsExporter.Headers.Should().Be("auth3=test3");
     }

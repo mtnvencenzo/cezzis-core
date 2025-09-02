@@ -3,13 +3,13 @@ namespace Cezzi.OTel;
 /// <summary>
 /// Options for open telemetry traces
 /// </summary>
-public class OTelTracesOptions
+public sealed class OTelTracesOptions
 {
     /// <summary>
-    /// The open telemetry exporter options for logging
+    /// The OpenTelemetry exporter options for tracing
     /// </summary>
     /// <value></value>
-    public OTelExporterOptions OtlpExporter { get; set; }
+    public OTelExporterOptions OtlpExporter { get; set; } = new();
 
     /// <summary>
     /// Whether or not open telemetry tracing is enabled
@@ -30,7 +30,7 @@ public class OTelTracesOptions
     public List<string> Sources { get; set; } = [];
 
     /// <summary>
-    /// Whether or not to include the console exporter with open telemetry logging
+    /// Whether to include the console exporter with OpenTelemetry tracing
     /// </summary>
     /// <value></value>
     public bool AddConsoleExporter { get; set; } = false;

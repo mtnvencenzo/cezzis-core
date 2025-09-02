@@ -2,7 +2,7 @@ namespace Cezzi.OTel;
 
 using OpenTelemetry.Exporter;
 
-/// <summary>Options for the otel exporter</summary>
-public class OTelExporterOptions : OtlpExporterOptions
+/// <summary>Options for configuring the OTLP exporter (inherits from OpenTelemetry.Exporter.OtlpExporterOptions).</summary>
+public sealed class OTelExporterOptions : OtlpExporterOptions
 {
 }

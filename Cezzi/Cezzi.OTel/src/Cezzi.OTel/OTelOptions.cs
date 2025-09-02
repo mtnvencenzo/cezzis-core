@@ -1,12 +1,12 @@
 namespace Cezzi.OTel;
 
 /// <summary>
-/// Options for open telemetry
+/// Options for OpenTelemetry
 /// </summary>
 public class OTelOptions
 {
     /// <summary>
-    /// The app settings section name used for open telemetry configurations
+    /// The app settings section name used for OpenTelemetry configurations
     /// </summary>
     public const string SectionName = "OTel";
 
@@ -17,7 +17,7 @@ public class OTelOptions
     public string ServiceName { get; set; }
 
     /// <summary>
-    /// Whether or not open telemetry is enabled
+    /// Whether OpenTelemetry is enabled
     /// </summary>
     /// <value></value>
     public bool Enabled { get; set; } = true;
@@ -29,20 +29,20 @@ public class OTelOptions
     public string ServiceNamespace { get; set; }
 
     /// <summary>
-    /// Options for open telemetry tracing
+    /// Options for OpenTelemetry tracing
     /// </summary>
     /// <value></value>
-    public OTelTracesOptions Traces { get; set; }
+    public OTelTracesOptions Traces { get; set; } = new();
 
     /// <summary>
-    /// Options for open telemetry logging
+    /// Options for OpenTelemetry logging
     /// </summary>
     /// <value></value>
-    public OTelLogsOptions Logs { get; set; }
+    public OTelLogsOptions Logs { get; set; } = new();
 
     /// <summary>
-    /// Options for open telemetry metrics
+    /// Options for OpenTelemetry metrics
     /// </summary>
     /// <value></value>
-    public OTelMetricsOptions Metrics { get; set; }
+    public OTelMetricsOptions Metrics { get; set; } = new();
 }

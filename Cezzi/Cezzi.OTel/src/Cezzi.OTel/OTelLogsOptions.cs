@@ -1,36 +1,36 @@
 namespace Cezzi.OTel;
 
 /// <summary>
-/// Options for open telemetry logging
+/// Options for OpenTelemetry logging
 /// </summary>
-public class OTelLogsOptions
+public sealed class OTelLogsOptions
 {
     /// <summary>
-    /// The open telemetry exporter options for logging
+    /// OTLP exporter options for logging
     /// </summary>
     /// <value></value>
-    public OTelExporterOptions OtlpExporter { get; set; }
+    public OTelExporterOptions OtlpExporter { get; set; } = new();
 
     /// <summary>
-    /// Whether or not open telemetry logging is enabled
+    /// Whether logging is enabled
     /// </summary>
     /// <value></value>
     public bool Enabled { get; set; } = true;
 
     /// <summary>
-    /// Whether or not to include formatted messages with the open telemetry logging
+    /// Whether to include formatted messages with logging
     /// </summary>
     /// <value></value>
     public bool IncludeFormattedMessage { get; set; } = false;
 
     /// <summary>
-    /// Where or not to include scopes with the logs
+    /// Whether to include scopes with the logs
     /// </summary>
     /// <value></value>
     public bool IncludeScopes { get; set; } = false;
 
     /// <summary>
-    /// Whether or not to include the console exporter with open telemetry logging
+    /// Whether to include the console exporter with logging
     /// </summary>
     /// <value></value>
     public bool AddConsoleExporter { get; set; } = false;

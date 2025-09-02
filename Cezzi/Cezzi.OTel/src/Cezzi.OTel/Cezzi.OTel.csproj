@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <IsPackable>true</IsPackable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <DocumentationFile>./bin/$(Configuration)/$(TargetFramework)/$(AssemblyName).xml</DocumentationFile>
@@ -19,12 +20,12 @@
     <PackageTags>Cezzi Open Telemetry Common Framework</PackageTags>
     <PackageIcon>cezzi-otel.png</PackageIcon>
     <PackageIconUrl>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-otel.png</PackageIconUrl>
+    <PackageIcon>https://stvecglocezzinuget001.blob.core.windows.net/nuget/cezzi-otel.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\..\readme.md" />
     <None Include=".pack\cezzi-otel.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -38,19 +39,6 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.0.0-rc10" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Text\Resources\RandomSources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>RandomSources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Update="Text\Resources\RandomSources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>RandomSources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Update="../../readme.md">
