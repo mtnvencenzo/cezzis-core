@@ -41,7 +41,7 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="../../readme.md">
+    <None Update="../readme.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
