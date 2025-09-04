@@ -1,30 +1,16 @@
 namespace Cezzi.OTel;
+
 /// <summary>
 /// Options for OpenTelemetry metrics.
-/// </summary>
+/// /// </summary>
 public sealed class OTelMetricsOptions
 {
-    /// <summary>
-    /// The OpenTelemetry exporter options for metrics
-    /// </summary>
-    /// <value></value>
-    public OTelExporterOptions OtlpExporter { get; set; } = new();
-
-    /// <summary>
-    /// Whether metrics are enabled
-    /// </summary>
-    /// <value></value>
+    /// <summary>Whether metrics are enabled</summary>
     public bool Enabled { get; set; } = true;
 
-    /// <summary>
-    /// Additional meters to include
-    /// </summary>
-    /// <value></value>
+    /// <summary>Additional meters to include</summary>
     public List<string> Meters { get; set; } = [];
 
-    /// <summary>
-    /// Whether to include the console exporter for metrics
-    /// </summary>
-    /// <value></value>
+    /// <summary>Whether to include the console exporter with OpenTelemetry tracing</summary>
     public bool AddConsoleExporter { get; set; } = false;
 }
