@@ -12,14 +12,10 @@ using FluentAssertions;
 public class OTelExtensionsTests
 {
     [Fact]
-    public void otel___does_not_load_any_provider_when_not_configured()
+    public void otel___does_not_load_any_provider_when_endpoint_not_configured()
     {
         // arrange
         var builder = Host.CreateApplicationBuilder();
-        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
-        {
-            { "OTel:Enabled", "false" }
-        });
 
         // act
         builder.AddApplicationOpenTelemetry();
@@ -38,6 +34,7 @@ public class OTelExtensionsTests
         var builder = Host.CreateApplicationBuilder();
         builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
         {
+            { "OTel:OtlpExporter:Endpoint", "http://otel-collector:4317" },
             { "OTel:Traces:Enabled", "false" }
         });
 
@@ -56,6 +53,7 @@ public class OTelExtensionsTests
         var builder = Host.CreateApplicationBuilder();
         builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
         {
+            { "OTel:OtlpExporter:Endpoint", "http://otel-collector:4317" },
             { "OTel:Metrics:Enabled", "false" }
         });
 
@@ -74,6 +72,7 @@ public class OTelExtensionsTests
         var builder = Host.CreateApplicationBuilder();
         builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
         {
+            { "OTel:OtlpExporter:Endpoint", "http://otel-collector:4317" },
             { "OTel:Logs:Enabled", "false" }
         });
 
@@ -90,6 +89,10 @@ public class OTelExtensionsTests
     {
         // arrange
         var builder = Host.CreateApplicationBuilder();
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+        {
+            { "OTel:OtlpExporter:Endpoint", "http://otel-collector:4317" }
+        });
 
         // act
         builder.AddApplicationOpenTelemetry();
@@ -99,7 +102,7 @@ public class OTelExtensionsTests
         void AssertOtlpExporter(OtlpExporterOptions opts)
         {
             opts.Should().NotBeNull();
-            opts.Endpoint.Should().Be(new Uri("http://localhost:4317"));
+            opts.Endpoint.Should().Be(new Uri("http://otel-collector:4317"));
             opts.Protocol.Should().Be(OtlpExportProtocol.Grpc);
             opts.Headers.Should().BeNull();
             opts.ExportProcessorType.Should().Be(OpenTelemetry.ExportProcessorType.Batch);
@@ -193,6 +196,10 @@ public class OTelExtensionsTests
         var resourceCounter = 0;
 
         var builder = Host.CreateApplicationBuilder();
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+        {
+            { "OTel:OtlpExporter:Endpoint", "http://localhost:1001" }
+        });
 
         // act
         builder.AddApplicationOpenTelemetry(

@@ -40,12 +40,9 @@ public static class OTelExtensions
         OTelOptions options = new();
         builder.Configuration.GetSection(OTelOptions.SectionName).Bind(options);
 
-        if (options.Enabled)
-        {
-            builder.AddLogProvider(options, logsConfigurator, resourceConfigurator);
-            builder.AddTraceProvider(options, traceConfigurator, resourceConfigurator);
-            builder.AddMetricProvider(options, metricsConfigurator, resourceConfigurator);
-        }
+        builder.AddLogProvider(options, logsConfigurator, resourceConfigurator);
+        builder.AddTraceProvider(options, traceConfigurator, resourceConfigurator);
+        builder.AddMetricProvider(options, metricsConfigurator, resourceConfigurator);
 
         return builder;
     }
@@ -73,15 +70,15 @@ public static class OTelExtensions
     {
         var traceOptions = otelOptions.Traces;
 
-        if (!(traceOptions?.Enabled ?? true))
+        var endpoint = GetOtlpValue(
+            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            specificEnv: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
+
+        if (!(traceOptions?.Enabled ?? true) || string.IsNullOrWhiteSpace(endpoint))
         {
             return builder;
         }
-
-        var endpoint = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.Endpoint?.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
 
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
@@ -139,15 +136,15 @@ public static class OTelExtensions
     {
         var metricOptions = otelOptions.Metrics;
 
-        if (!(metricOptions?.Enabled ?? true))
+        var endpoint = GetOtlpValue(
+            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            specificEnv: "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
+
+        if (!(metricOptions?.Enabled ?? true) || string.IsNullOrWhiteSpace(endpoint))
         {
             return builder;
         }
-
-        var endpoint = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.Endpoint?.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
 
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
@@ -195,15 +192,15 @@ public static class OTelExtensions
     {
         var logOptions = otelOptions.Logs;
 
-        if (!(logOptions?.Enabled ?? true))
+        var endpoint = GetOtlpValue(
+            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            specificEnv: "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
+
+        if (!(logOptions?.Enabled ?? true) || string.IsNullOrWhiteSpace(endpoint))
         {
             return builder;
         }
-
-        var endpoint = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.Endpoint?.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
 
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),

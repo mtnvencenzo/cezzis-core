@@ -14,9 +14,6 @@ public class OTelOptions
     /// <summary>The name of the service</summary>
     public string ServiceName { get; set; }
 
-    /// <summary>Whether OpenTelemetry is enabled</summary>
-    public bool Enabled { get; set; } = true;
-
     /// <summary>The namespace that the service belongs to</summary>
     public string ServiceNamespace { get; set; }
 
