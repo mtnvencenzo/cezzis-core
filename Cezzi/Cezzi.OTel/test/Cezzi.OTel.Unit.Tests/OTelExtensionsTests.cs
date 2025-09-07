@@ -12,6 +12,22 @@ using FluentAssertions;
 public class OTelExtensionsTests
 {
     [Fact]
+    public void otel___does_not_load_any_provider_when_endpoint_not_configured()
+    {
+        // arrange
+        var builder = Host.CreateApplicationBuilder();
+
+        // act
+        builder.AddApplicationOpenTelemetry();
+        var app = builder.Build();
+
+        // Verify provider setup
+        app.Services.GetService<OpenTelemetry.Trace.TracerProvider>().Should().BeNull();
+        app.Services.GetService<OpenTelemetry.Metrics.MeterProvider>().Should().BeNull();
+        app.Services.GetService<OpenTelemetry.Logs.OpenTelemetryLoggerOptions>().Should().BeNull();
+    }
+
+    [Fact]
     public void otel___does_not_load_trace_provider_when_not_configured()
     {
         // arrange
@@ -23,7 +39,7 @@ public class OTelExtensionsTests
         });
 
         // act
-        builder.AddOTel();
+        builder.AddApplicationOpenTelemetry();
         var app = builder.Build();
 
         // Verify meter provider setup
@@ -42,7 +58,7 @@ public class OTelExtensionsTests
         });
 
         // act
-        builder.AddOTel();
+        builder.AddApplicationOpenTelemetry();
         var app = builder.Build();
 
         // Verify meter provider setup
@@ -61,7 +77,7 @@ public class OTelExtensionsTests
         });
 
         // act
-        builder.AddOTel();
+        builder.AddApplicationOpenTelemetry();
         var app = builder.Build();
 
         // Verify meter provider setup
@@ -79,10 +95,7 @@ public class OTelExtensionsTests
         });
 
         // act
-        builder
-            .AddOTel()
-            .WithOTelCollector();
-
+        builder.AddApplicationOpenTelemetry();
         var app = builder.Build();
 
         // assert
@@ -139,10 +152,7 @@ public class OTelExtensionsTests
         });
 
         // act
-        builder
-            .AddOTel()
-            .WithOTelCollector();
-
+        builder.AddApplicationOpenTelemetry();
         var app = builder.Build();
 
         // assert
@@ -192,7 +202,7 @@ public class OTelExtensionsTests
         });
 
         // act
-        builder.AddOTel(
+        builder.AddApplicationOpenTelemetry(
             traceConfigurator: (t) =>
             {
                 traceCounter++;
