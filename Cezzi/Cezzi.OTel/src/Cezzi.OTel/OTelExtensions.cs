@@ -70,15 +70,15 @@ public static class OTelExtensions
     {
         var traceOptions = otelOptions.Traces;
 
+        if (!(traceOptions?.Enabled ?? true))
+        {
+            return builder;
+        }
+
         var endpoint = GetOtlpValue(
             config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
             specificEnv: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
-
-        if (!(traceOptions?.Enabled ?? true) || string.IsNullOrWhiteSpace(endpoint))
-        {
-            return builder;
-        }
 
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
@@ -115,7 +115,10 @@ public static class OTelExtensions
 
                 traceOptions?.Sources?.ForEach(s => tracing.AddSource(s));
 
-                tracing.AddOtlpExporter("traces", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
+                if (!string.IsNullOrWhiteSpace(endpoint))
+                {
+                    tracing.AddOtlpExporter("traces", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
+                }
 
                 if (traceOptions?.AddConsoleExporter ?? false)
                 {
@@ -136,15 +139,15 @@ public static class OTelExtensions
     {
         var metricOptions = otelOptions.Metrics;
 
+        if (!(metricOptions?.Enabled ?? true))
+        {
+            return builder;
+        }
+
         var endpoint = GetOtlpValue(
             config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
             specificEnv: "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
-
-        if (!(metricOptions?.Enabled ?? true) || string.IsNullOrWhiteSpace(endpoint))
-        {
-            return builder;
-        }
 
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
@@ -171,7 +174,10 @@ public static class OTelExtensions
 
                 metricOptions?.Meters?.ForEach(x => metrics.AddMeter(x));
 
-                metrics.AddOtlpExporter("metrics", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
+                if (!string.IsNullOrWhiteSpace(endpoint))
+                {
+                    metrics.AddOtlpExporter("metrics", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
+                }
 
                 if (metricOptions?.AddConsoleExporter ?? false)
                 {
@@ -192,15 +198,15 @@ public static class OTelExtensions
     {
         var logOptions = otelOptions.Logs;
 
+        if (!(logOptions?.Enabled ?? true))
+        {
+            return builder;
+        }
+
         var endpoint = GetOtlpValue(
             config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
             specificEnv: "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
-
-        if (!(logOptions?.Enabled ?? true) || string.IsNullOrWhiteSpace(endpoint))
-        {
-            return builder;
-        }
 
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
@@ -222,7 +228,11 @@ public static class OTelExtensions
             logging.SetResourceBuilder(GetResourceBuilder(otelOptions, resourceConfigurator));
             logging.IncludeFormattedMessage = logOptions?.IncludeFormattedMessage ?? false;
             logging.IncludeScopes = logOptions?.IncludeScopes ?? false;
-            logging.AddOtlpExporter("logs", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
+
+            if (!string.IsNullOrWhiteSpace(endpoint))
+            {
+                logging.AddOtlpExporter("logs", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
+            }
 
             if (logOptions?.AddConsoleExporter ?? false)
             {

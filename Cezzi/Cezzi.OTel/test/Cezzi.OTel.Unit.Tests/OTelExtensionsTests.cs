@@ -12,7 +12,7 @@ using FluentAssertions;
 public class OTelExtensionsTests
 {
     [Fact]
-    public void otel___does_not_load_any_provider_when_endpoint_not_configured()
+    public void otel___loads_providers_when_endpoint_not_configured()
     {
         // arrange
         var builder = Host.CreateApplicationBuilder();
@@ -22,9 +22,9 @@ public class OTelExtensionsTests
         var app = builder.Build();
 
         // Verify provider setup
-        app.Services.GetService<OpenTelemetry.Trace.TracerProvider>().Should().BeNull();
-        app.Services.GetService<OpenTelemetry.Metrics.MeterProvider>().Should().BeNull();
-        app.Services.GetService<OpenTelemetry.Logs.OpenTelemetryLoggerOptions>().Should().BeNull();
+        app.Services.GetService<OpenTelemetry.Trace.TracerProvider>().Should().NotBeNull();
+        app.Services.GetService<OpenTelemetry.Metrics.MeterProvider>().Should().NotBeNull();
+        app.Services.GetService<OpenTelemetry.Logs.LoggerProvider>().Should().NotBeNull();
     }
 
     [Fact]
@@ -81,7 +81,7 @@ public class OTelExtensionsTests
         var app = builder.Build();
 
         // Verify meter provider setup
-        app.Services.GetService<OpenTelemetry.Logs.OpenTelemetryLoggerOptions>().Should().BeNull();
+        app.Services.GetService<OpenTelemetry.Logs.LoggerProvider>().Should().BeNull();
     }
 
     [Fact]
