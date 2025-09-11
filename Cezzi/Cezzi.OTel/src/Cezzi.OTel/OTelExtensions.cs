@@ -263,6 +263,13 @@ public static class OTelExtensions
             serviceVersion: (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version?.ToString() ?? "unknown",
             serviceInstanceId: Environment.MachineName.ToLowerInvariant());
 
+        resourceBuilder.AddAttributes(
+        [
+            new("service.environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLowerInvariant() ?? "unknown"),
+            new("host.host", Environment.MachineName.ToLowerInvariant()),
+            new("host.name", Environment.MachineName.ToLowerInvariant())
+        ]);
+
         configure?.Invoke(resourceBuilder);
 
         return resourceBuilder;
