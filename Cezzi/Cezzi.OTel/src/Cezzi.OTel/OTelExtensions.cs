@@ -265,7 +265,7 @@ public static class OTelExtensions
 
         resourceBuilder.AddAttributes(
         [
-            new("service.environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLowerInvariant() ?? "unknown"),
+            new("deployment.environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLowerInvariant() ?? "unknown"),
             new("host.host", Environment.MachineName.ToLowerInvariant()),
             new("host.name", Environment.MachineName.ToLowerInvariant())
         ]);
