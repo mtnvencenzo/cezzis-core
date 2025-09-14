@@ -75,15 +75,17 @@ public static class OTelExtensions
             return builder;
         }
 
-        var endpoint = GetOtlpValue(
-            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
-            specificEnv: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
-
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
             specificEnv: "OTEL_EXPORTER_OTLP_TRACES_PROTOCOL",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_PROTOCOL);
+
+        var endpoint = GetOtlpEndpointValue(
+            protocol: protocol,
+            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            specificEnv: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT,
+            protobufPath: "traces");
 
         var headers = GetOtlpValue(
             config: otelOptions.OtlpExporter?.Headers?.ToString(),
@@ -144,15 +146,17 @@ public static class OTelExtensions
             return builder;
         }
 
-        var endpoint = GetOtlpValue(
-            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
-            specificEnv: "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
-
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
             specificEnv: "OTEL_EXPORTER_OTLP_METRICS_PROTOCOL",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_PROTOCOL);
+
+        var endpoint = GetOtlpEndpointValue(
+            protocol: protocol,
+            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            specificEnv: "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT,
+            protobufPath: "metrics");
 
         var headers = GetOtlpValue(
             config: otelOptions.OtlpExporter?.Headers?.ToString(),
@@ -203,15 +207,17 @@ public static class OTelExtensions
             return builder;
         }
 
-        var endpoint = GetOtlpValue(
-            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
-            specificEnv: "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT);
-
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
             specificEnv: "OTEL_EXPORTER_OTLP_LOGS_PROTOCOL",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_PROTOCOL);
+
+        var endpoint = GetOtlpEndpointValue(
+            protocol: protocol,
+            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            specificEnv: "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT,
+            protobufPath: "logs");
 
         var headers = GetOtlpValue(
             config: otelOptions.OtlpExporter?.Headers?.ToString(),
@@ -249,6 +255,23 @@ public static class OTelExtensions
     {
         // Removing slashes from http/protobuf in ENV specific value
         return GetOtlpValue(config, specificEnv, defaultEnv)?.Replace("/", string.Empty);
+    }
+
+    private static string GetOtlpEndpointValue(string protocol, string config, string specificEnv, string defaultEnv, string protobufPath)
+    {
+        var proto = Enum.TryParse<OtlpExportProtocol>(protocol?.ToString(), true, out var parsedProtocol)
+            ? parsedProtocol
+            : OtlpExportProtocol.Grpc;
+
+        var endpoint = GetOtlpValue(config, specificEnv, defaultEnv);
+
+        if (proto == OtlpExportProtocol.HttpProtobuf && !string.IsNullOrWhiteSpace(endpoint) && !endpoint.EndsWith($"/v1/{protobufPath}", StringComparison.OrdinalIgnoreCase))
+        {
+            // Appending /v1/logs to the endpoint if using HTTP protocol and not already present
+            endpoint = endpoint.EndsWith("/") ? $"{endpoint}v1/{protobufPath}" : $"{endpoint}/v1/{protobufPath}";
+        }
+
+        return endpoint;
     }
 
     private static string GetOtlpValue(string config, string specificEnv, string defaultEnv) => Environment.GetEnvironmentVariable(specificEnv)
