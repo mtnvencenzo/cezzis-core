@@ -25,4 +25,7 @@ public class OTelOptions
 
     /// <summary>Options for OpenTelemetry metrics</summary>
     public OTelMetricsOptions Metrics { get; set; } = new();
+
+    /// <summary>Options for OpenTelemetry resource attributes</summary>
+    public OTelResourceOptions Resource { get; set; } = new();
 }

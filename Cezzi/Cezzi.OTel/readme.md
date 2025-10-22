@@ -5,66 +5,50 @@ Cezzi.OTel is a professional .NET library and NuGet package for integrating [Ope
 
 ## 🎯 Key Features
 - Plug-and-play OpenTelemetry setup for Traces, Metrics, and Logs
+- Easy configuration via appsettings
 - Flexible configuration via appsettings, environment variables, or code
+- Advanced OTLP exporter configuration via DI
 - Extensible options for custom telemetry scenarios
 - .NET 9+ support and modern best practices
 
-## 🛠️ Installation
-Install via NuGet:
-```bash
-dotnet add package Cezzi.OTel
-```
+## Usage
 
-## ⚡ Quick Start
-Add OpenTelemetry to your application with a single line:
+Add OpenTelemetry to your application:
+
 ```csharp
-using Cezzi.OTel;
-
-var builder = Host.CreateApplicationBuilder();
 builder.AddApplicationOpenTelemetry();
-var app = builder.Build();
 ```
 
-## ⚙️ Configuration
-You can configure Cezzi.OTel using `appsettings.json`, environment variables, or directly in code.
+## Configuration
 
+Configure via `appsettings.json` under the `OTel` section:
 
-### Example: appsettings.json
 ```json
 {
   "OTel": {
     "ServiceName": "MyService",
     "ServiceNamespace": "MyNamespace",
-    "Enabled": true,
-    "OtlpExporter": {
-      "Endpoint": "http://localhost:4317",
-      "Protocol": "grpc",
-      "Headers": "auth=test",
-      "TimeoutMilliseconds": 10000,
-      "ExportProcessorType": "Batch",
-      "BatchExportProcessorOptions": {
-        "MaxQueueSize": 2048,
-        "ScheduledDelayMilliseconds": 5000,
-        "ExporterTimeoutMilliseconds": 30000,
-        "MaxExportBatchSize": 512
-      }
-    },
     "Traces": {
       "Enabled": true,
-      "ExcludePaths": ["/health", "/metrics"],
-      "Sources": ["MyApp.Source"],
-      "AddConsoleExporter": true
-    },
-    "Metrics": {
-      "Enabled": true,
-      "Meters": ["MyApp.Meter"],
+      "ExcludePaths": ["/health"],
+      "Sources": ["MyActivitySource"],
       "AddConsoleExporter": false
     },
     "Logs": {
       "Enabled": true,
-      "IncludeFormattedMessage": true,
+      "IncludeFormattedMessage": false,
       "IncludeScopes": false,
       "AddConsoleExporter": false
+    },
+    "Metrics": {
+      "Enabled": true,
+      "Meters": ["MyMeter"],
+      "AddConsoleExporter": false
+    },
+    "Resource": {
+      "Attributes": {
+        "deployment.environment": "production"
+      }
     }
   }
 }
@@ -114,19 +98,48 @@ export OTEL_EXPORTER_OTLP_METRICS_PROTOCOL="httpProtobuf"
 
 ### Example: Code-based Extension Usage
 You can further customize telemetry providers using extension methods:
+
 ```csharp
-builder.AddApplicationOpenTelemetry(
-    traceConfigurator: tracing => tracing.AddSource("Custom.Source"),
-    metricsConfigurator: metrics => metrics.AddMeter("Custom.Meter"),
-    logsConfigurator: logging => logging.IncludeScopes = true,
-    resourceConfigurator: resource => resource.WithElasticApm("production")
-);
+  builder.AddApplicationOpenTelemetry(
+      configureTracing: tracing => tracing.AddSource("Custom.Source"),
+      configureMetrics: metrics => metrics.AddMeter("Custom.Meter"),
+      coinfigureLogging: logging => logging.IncludeScopes = true,
+      configureResource: resource => resource.WithElasticApm("production")
+  );
 ```
 
-#### Elastic APM Resource Extension
+### Advanced: Custom OTLP Exporter Configuration
+
+You can register a custom configurator to modify OTLP exporter options after DI is built:
+
 ```csharp
-builder.AddApplicationOpenTelemetry(
-    resourceConfigurator: resource => resource.WithElasticApm("production")
+builder.AddOtlpExporterConfigurator<MyOtlpConfigurator>();
+```
+
+Implement `IOtlpExporterConfigurator`:
+
+```csharp
+using OpenTelemetry.Exporter;
+
+public class MyOtlpConfigurator(IMyService myService) : IOtlpExporterConfigurator
+{
+    public bool Configure(string discriminator, OtlpExporterOptions options)
+    {
+        var token = myService.GetToken();
+
+        // Custom logic to modify options
+        options.Headers = $"Authorization=API-Token {token}";
+        return true;
+    }
+}
+```
+
+
+#### Elastic APM Resource Extension
+Add common resource attributes that are used within Elastic Stack / Kibana
+```csharp
+  builder.AddApplicationOpenTelemetry(
+    configureResource: resource => resource.WithElasticApm("production")
 );
 ```
 

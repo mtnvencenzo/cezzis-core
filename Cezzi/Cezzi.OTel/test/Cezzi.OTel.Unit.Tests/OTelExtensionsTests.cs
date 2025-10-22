@@ -8,11 +8,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 using FluentAssertions;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Logs;
 
 public class OTelExtensionsTests
 {
     [Fact]
-    public void otel___loads_providers_when_endpoint_not_configured()
+    public void otel___does_not_load_providers_when_endpoint_not_configured()
     {
         // arrange
         var builder = Host.CreateApplicationBuilder();
@@ -22,9 +25,9 @@ public class OTelExtensionsTests
         var app = builder.Build();
 
         // Verify provider setup
-        app.Services.GetService<OpenTelemetry.Trace.TracerProvider>().Should().NotBeNull();
-        app.Services.GetService<OpenTelemetry.Metrics.MeterProvider>().Should().NotBeNull();
-        app.Services.GetService<OpenTelemetry.Logs.LoggerProvider>().Should().NotBeNull();
+        app.Services.GetService<TracerProvider>().Should().BeNull();
+        app.Services.GetService<MeterProvider>().Should().BeNull();
+        app.Services.GetService<LoggerProvider>().Should().BeNull();
     }
 
     [Fact]
@@ -81,7 +84,7 @@ public class OTelExtensionsTests
         var app = builder.Build();
 
         // Verify meter provider setup
-        app.Services.GetService<OpenTelemetry.Logs.LoggerProvider>().Should().BeNull();
+        app.Services.GetService<LoggerProvider>().Should().BeNull();
     }
 
     [Fact]
@@ -171,17 +174,17 @@ public class OTelExtensionsTests
         }
 
         // Verify meter provider setup
-        app.Services.GetRequiredService<OpenTelemetry.Trace.TracerProvider>();
+        app.Services.GetRequiredService<TracerProvider>();
         var exporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("traces");
         AssertOtlpExporter(exporter);
 
         // Verify meter provider setup
-        app.Services.GetRequiredService<OpenTelemetry.Metrics.MeterProvider>();
+        app.Services.GetRequiredService<MeterProvider>();
         exporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("metrics");
         AssertOtlpExporter(exporter);
 
         // Verify logger provider setup
-        app.Services.GetRequiredService<OpenTelemetry.Logs.LoggerProvider>();
+        app.Services.GetRequiredService<LoggerProvider>();
         exporter = app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("logs");
         AssertOtlpExporter(exporter);
     }
@@ -203,22 +206,22 @@ public class OTelExtensionsTests
 
         // act
         builder.AddApplicationOpenTelemetry(
-            traceConfigurator: (t) =>
+            configureTracing: (t) =>
             {
                 traceCounter++;
                 return t;
             },
-            metricsConfigurator: (m) =>
+            configureMetrics: (m) =>
             {
                 metricsCounter++;
                 return m;
             },
-            logsConfigurator: (l) =>
+            configureLogging: (l) =>
             {
                 logsCounter++;
                 return l;
             },
-            resourceConfigurator: (r) =>
+            configureResource: (r) =>
             {
                 resourceCounter++;
                 return r;
@@ -231,6 +234,44 @@ public class OTelExtensionsTests
         traceCounter.Should().Be(1);
         metricsCounter.Should().Be(1);
         logsCounter.Should().Be(1);
-        resourceCounter.Should().Be(3);
+        resourceCounter.Should().Be(1);
+    }
+
+    [Fact]
+    public void otel___post_configures_auth_header()
+    {
+        // arrange
+
+        var builder = Host.CreateApplicationBuilder();
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string>
+        {
+            { "OTel:OtlpExporter:Endpoint", "http://localhost:1001" }
+        });
+
+        // act
+        builder
+            .AddApplicationOpenTelemetry()
+            .AddOtlpExporterConfigurator<TestOtlpExporterConfigurator>();
+
+        var app = builder.Build();
+
+        _ = app.Services.GetRequiredService<TracerProvider>();
+        _ = app.Services.GetRequiredService<MeterProvider>();
+        _ = app.Services.GetRequiredService<LoggerProvider>();
+
+        // Assert
+        app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("traces").Headers.Should().Contain("auth=test");
+        app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("metrics").Headers.Should().Contain("auth=test");
+        app.Services.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get("logs").Headers.Should().Contain("auth=test");
+    }
+
+    private class TestOtlpExporterConfigurator : IOtlpExporterConfigurator
+    {
+        public bool Configure(string discriminator, OtlpExporterOptions options)
+        {
+            var headers = string.IsNullOrEmpty(options.Headers) ? "" : options.Headers + ",";
+            options.Headers = headers + "auth=test";
+            return true;
+        }
     }
 }

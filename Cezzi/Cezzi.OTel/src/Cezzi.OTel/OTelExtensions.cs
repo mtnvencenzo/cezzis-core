@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
@@ -23,33 +24,54 @@ public static class OTelExtensions
     /// Adds OpenTelemetry to the application pipeline.
     /// </summary>
     /// <param name="builder">The application builder to configure OpenTelemetry for.</param>
-    /// <param name="traceConfigurator">Optional delegate to further configure the TracerProviderBuilder.</param>
-    /// <param name="metricsConfigurator">Optional delegate to further configure the MeterProviderBuilder.</param>
-    /// <param name="logsConfigurator">Optional delegate to further configure the OpenTelemetryLoggerOptions.</param>
-    /// <param name="resourceConfigurator">Optional delegate to further configure the ResourceBuilder for telemetry resources.</param>
+    /// <param name="configureTracing">Optional delegate to further configure the TracerProviderBuilder.</param>
+    /// <param name="configureMetrics">Optional delegate to further configure the MeterProviderBuilder.</param>
+    /// <param name="configureLogging">Optional delegate to further configure the OpenTelemetryLoggerOptions.</param>
+    /// <param name="configureResource">Optional delegate to further configure the ResourceBuilder for telemetry resources.</param>
     /// <returns>The application builder with OpenTelemetry configured.</returns>
     public static IHostApplicationBuilder AddApplicationOpenTelemetry(
         this IHostApplicationBuilder builder,
-        Func<TracerProviderBuilder, TracerProviderBuilder> traceConfigurator = null,
-        Func<MeterProviderBuilder, MeterProviderBuilder> metricsConfigurator = null,
-        Func<OpenTelemetryLoggerOptions, OpenTelemetryLoggerOptions> logsConfigurator = null,
-        Func<ResourceBuilder, ResourceBuilder> resourceConfigurator = null)
+        Func<TracerProviderBuilder, TracerProviderBuilder> configureTracing = null,
+        Func<MeterProviderBuilder, MeterProviderBuilder> configureMetrics = null,
+        Func<OpenTelemetryLoggerOptions, OpenTelemetryLoggerOptions> configureLogging = null,
+        Func<ResourceBuilder, ResourceBuilder> configureResource = null)
     {
         AppContext.SetSwitch("Azure.Experimental.EnableActivitySource", true);
 
-        OTelOptions options = new();
-        builder.Configuration.GetSection(OTelOptions.SectionName).Bind(options);
+        OTelOptions otelOptions = new();
+        builder.Configuration.GetSection(OTelOptions.SectionName).Bind(otelOptions);
+        builder.Services.AddSingleton(otelOptions);
 
-        builder.AddLogProvider(options, logsConfigurator, resourceConfigurator);
-        builder.AddTraceProvider(options, traceConfigurator, resourceConfigurator);
-        builder.AddMetricProvider(options, metricsConfigurator, resourceConfigurator);
+        var resourceBuilder = GetResourceBuilder(otelOptions, configureResource);
+
+        builder.AddTraceProvider(
+            otelOptions: otelOptions,
+            resourceBuilder: resourceBuilder,
+            configureTracing: configureTracing);
+
+        builder.AddMeterProvider(
+            otelOptions: otelOptions,
+            resourceBuilder: resourceBuilder,
+            configureMetrics: configureMetrics);
+
+        builder.AddLogProvider(
+            otelOptions: otelOptions,
+            resourceBuilder: resourceBuilder,
+            configureLogging: configureLogging);
 
         return builder;
     }
 
-    /// <summary>
-    /// Adds Elastic APM-compatible resource attributes to the <see cref="ResourceBuilder"/>.
-    /// </summary>
+    /// <summary>Registers a custom <see cref="IOtlpExporterConfigurator"/> implementation for configuring OTLP exporter options.</summary>
+    public static IHostApplicationBuilder AddOtlpExporterConfigurator<TConfigurator>(
+        this IHostApplicationBuilder builder)
+        where TConfigurator : class, IOtlpExporterConfigurator
+    {
+        builder.Services.AddSingleton<IOtlpExporterConfigurator, TConfigurator>();
+        return builder;
+    }
+
+    /// <summary>Adds Elastic APM-compatible resource attributes to the <see cref="ResourceBuilder"/>.</summary>
     /// <param name="builder">The <see cref="ResourceBuilder"/> to add attributes to.</param>
     /// <param name="environment">The deployment environment name (e.g., "production", "staging").</param>
     /// <returns>The <see cref="ResourceBuilder"/> with Elastic APM attributes added.</returns>
@@ -65,9 +87,10 @@ public static class OTelExtensions
     private static IHostApplicationBuilder AddTraceProvider(
         this IHostApplicationBuilder builder,
         OTelOptions otelOptions,
-        Func<TracerProviderBuilder, TracerProviderBuilder> configure = null,
-        Func<ResourceBuilder, ResourceBuilder> resourceConfigurator = null)
+        ResourceBuilder resourceBuilder,
+        Func<TracerProviderBuilder, TracerProviderBuilder> configureTracing = null)
     {
+        var signal = "traces";
         var traceOptions = otelOptions.Traces;
 
         if (!(traceOptions?.Enabled ?? true))
@@ -75,33 +98,51 @@ public static class OTelExtensions
             return builder;
         }
 
+        // protocol is needed here to properly build the endpoint 
+        // since the endpoint format is different for http/protobuf vs grpc
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
             specificEnv: "OTEL_EXPORTER_OTLP_TRACES_PROTOCOL",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_PROTOCOL);
 
+        // using config directly here so default otlp endpoint isn't used in the check
+        // By defautl, the otlp object uses localhost:4317|4318 which would always make this non empty
+        // We want to skip adding the exporter if no endpoint is configured specifically
         var endpoint = GetOtlpEndpointValue(
             protocol: protocol,
-            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            configValue: builder.Configuration["OTel:OtlpExporter:Endpoint"],
             specificEnv: "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT,
-            protobufPath: "traces");
+            signal: signal);
 
-        var headers = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.Headers?.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_TRACES_HEADERS",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_HEADERS);
+        if (string.IsNullOrWhiteSpace(endpoint))
+        {
+            return builder;
+        }
 
-        var timeoutMilliseconds = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.TimeoutMilliseconds.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_TRACES_TIMEOUT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_TIMEOUT);
+        // -------------------------------------------------------------------------------
+        // Using the ConfigureOpenTelemetryTracerProvider to ensure that the exporter is properly
+        // configured before the trace provider is built and used.
+        // -------------------------------------------------------------------------------
+        // This gives us the opportunity to configure the OTel options after the service provider
+        // has built up to ensure that any configuration done after the initial binding is captured here.
+        // -------------------------------------------------------------------------------
+        builder.Services.ConfigureOpenTelemetryTracerProvider((sp, tracing) =>
+        {
+            PostConfigureOtlpExporter(
+                serviceProvider: sp,
+                endpoint: endpoint,
+                protocol: protocol,
+                telemetryDiscriminator: signal,
+                specificHeadersEnvKey: "OTEL_EXPORTER_OTLP_TRACES_HEADERS",
+                specificTimeoutEnvKey: "OTEL_EXPORTER_OTLP_TRACES_TIMEOUT");
+        });
 
         builder.Services.AddOpenTelemetry()
             .WithTracing(tracing =>
             {
                 tracing
-                    .SetResourceBuilder(GetResourceBuilder(otelOptions, resourceConfigurator))
+                    .SetResourceBuilder(resourceBuilder)
                     .AddHttpClientInstrumentation()
                     .AddGrpcClientInstrumentation()
                     .AddAspNetCoreInstrumentation((o) =>
@@ -117,28 +158,27 @@ public static class OTelExtensions
 
                 traceOptions?.Sources?.ForEach(s => tracing.AddSource(s));
 
-                if (!string.IsNullOrWhiteSpace(endpoint))
-                {
-                    tracing.AddOtlpExporter("traces", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
-                }
-
                 if (traceOptions?.AddConsoleExporter ?? false)
                 {
                     tracing.AddConsoleExporter();
                 }
 
-                configure?.Invoke(tracing);
+                // Hook to allow the consumer to further configure otel logging
+                configureTracing?.Invoke(tracing);
+
+                tracing.AddOtlpExporter(signal, null as Action<OtlpExporterOptions>); // null is important here
             });
 
         return builder;
     }
 
-    private static IHostApplicationBuilder AddMetricProvider(
+    private static IHostApplicationBuilder AddMeterProvider(
         this IHostApplicationBuilder builder,
         OTelOptions otelOptions,
-        Func<MeterProviderBuilder, MeterProviderBuilder> configure = null,
-        Func<ResourceBuilder, ResourceBuilder> resourceConfigurator = null)
+        ResourceBuilder resourceBuilder,
+        Func<MeterProviderBuilder, MeterProviderBuilder> configureMetrics = null)
     {
+        var signal = "metrics";
         var metricOptions = otelOptions.Metrics;
 
         if (!(metricOptions?.Enabled ?? true))
@@ -146,49 +186,65 @@ public static class OTelExtensions
             return builder;
         }
 
+        // protocol is needed here to properly build the endpoint 
+        // since the endpoint format is different for http/protobuf vs grpc
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
             specificEnv: "OTEL_EXPORTER_OTLP_METRICS_PROTOCOL",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_PROTOCOL);
 
+        // using config directly here so default otlp endpoint isn't used in the check
+        // By defautl, the otlp object uses localhost:4317|4318 which would always make this non empty
+        // We want to skip adding the exporter if no endpoint is configured specifically
         var endpoint = GetOtlpEndpointValue(
             protocol: protocol,
-            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            configValue: builder.Configuration["OTel:OtlpExporter:Endpoint"],
             specificEnv: "OTEL_EXPORTER_OTLP_METRICS_ENDPOINT",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT,
-            protobufPath: "metrics");
+            signal: signal);
 
-        var headers = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.Headers?.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_METRICS_HEADERS",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_HEADERS);
+        if (string.IsNullOrWhiteSpace(endpoint))
+        {
+            return builder;
+        }
 
-        var timeoutMilliseconds = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.TimeoutMilliseconds.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_METRICS_TIMEOUT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_TIMEOUT);
+        // -------------------------------------------------------------------------------
+        // Using the ConfigureOpenTelemetryMeterProvider to ensure that the exporter is properly
+        // configured before the meter provider is built and used.
+        // -------------------------------------------------------------------------------
+        // This gives us the opportunity to configure the OTel options after the service provider
+        // has built up to ensure that any configuration done after the initial binding is captured here.
+        // -------------------------------------------------------------------------------
+        builder.Services.ConfigureOpenTelemetryMeterProvider((sp, meter) =>
+        {
+            PostConfigureOtlpExporter(
+                serviceProvider: sp,
+                endpoint: endpoint,
+                protocol: protocol,
+                telemetryDiscriminator: signal,
+                specificHeadersEnvKey: "OTEL_EXPORTER_OTLP_METRICS_HEADERS",
+                specificTimeoutEnvKey: "OTEL_EXPORTER_OTLP_METRICS_TIMEOUT");
+        });
 
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
             {
                 metrics
-                    .SetResourceBuilder(GetResourceBuilder(otelOptions, resourceConfigurator))
+                    .SetResourceBuilder(resourceBuilder)
                     .AddRuntimeInstrumentation()
                     .AddAspNetCoreInstrumentation();
 
                 metricOptions?.Meters?.ForEach(x => metrics.AddMeter(x));
-
-                if (!string.IsNullOrWhiteSpace(endpoint))
-                {
-                    metrics.AddOtlpExporter("metrics", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
-                }
 
                 if (metricOptions?.AddConsoleExporter ?? false)
                 {
                     metrics.AddConsoleExporter();
                 }
 
-                configure?.Invoke(metrics);
+                // Hook to allow the consumer to further configure otel logging
+                configureMetrics?.Invoke(metrics);
+
+                metrics.AddOtlpExporter(signal, null as Action<OtlpExporterOptions>); // null is important here
             });
 
         return builder;
@@ -197,9 +253,10 @@ public static class OTelExtensions
     private static IHostApplicationBuilder AddLogProvider(
         this IHostApplicationBuilder builder,
         OTelOptions otelOptions,
-        Func<OpenTelemetryLoggerOptions, OpenTelemetryLoggerOptions> configure = null,
-        Func<ResourceBuilder, ResourceBuilder> resourceConfigurator = null)
+        ResourceBuilder resourceBuilder,
+        Func<OpenTelemetryLoggerOptions, OpenTelemetryLoggerOptions> configureLogging = null)
     {
+        var signal = "logs";
         var logOptions = otelOptions.Logs;
 
         if (!(logOptions?.Enabled ?? true))
@@ -207,48 +264,84 @@ public static class OTelExtensions
             return builder;
         }
 
+        // protocol is needed here to properly build the endpoint 
+        // since the endpoint format is different for http/protobuf vs grpc
         var protocol = GetOtlpProtocolValue(
             config: otelOptions.OtlpExporter?.Protocol.ToString(),
             specificEnv: "OTEL_EXPORTER_OTLP_LOGS_PROTOCOL",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_PROTOCOL);
 
+        // using config directly here so default otlp endpoint isn't used in the check
+        // By defautl, the otlp object uses localhost:4317|4318 which would always make this non empty
+        // We want to skip adding the exporter if no endpoint is configured specifically
         var endpoint = GetOtlpEndpointValue(
             protocol: protocol,
-            config: builder.Configuration["OTel:OtlpExporter:Endpoint"],
+            configValue: builder.Configuration["OTel:OtlpExporter:Endpoint"],
             specificEnv: "OTEL_EXPORTER_OTLP_LOGS_ENDPOINT",
             defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_ENDPOINT,
-            protobufPath: "logs");
+            signal: signal);
 
-        var headers = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.Headers?.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_LOGS_HEADERS",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_HEADERS);
+        if (string.IsNullOrWhiteSpace(endpoint))
+        {
+            return builder;
+        }
 
-        var timeoutMilliseconds = GetOtlpValue(
-            config: otelOptions.OtlpExporter?.TimeoutMilliseconds.ToString(),
-            specificEnv: "OTEL_EXPORTER_OTLP_LOGS_TIMEOUT",
-            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_TIMEOUT);
+        // -------------------------------------------------------------------------------
+        // Using the ConfigureOpenTelemetryLoggerProvider to ensure that the exporter is properly
+        // configured before the logger provider is built and used.
+        // -------------------------------------------------------------------------------
+        // This gives us the opportunity to configure the OTel options after the service provider
+        // has built up to ensure that any configuration done after the initial binding is captured here.
+        // -------------------------------------------------------------------------------
+        builder.Services.ConfigureOpenTelemetryLoggerProvider((sp, logging) =>
+        {
+            PostConfigureOtlpExporter(
+                serviceProvider: sp,
+                endpoint: endpoint,
+                protocol: protocol,
+                telemetryDiscriminator: signal,
+                specificHeadersEnvKey: "OTEL_EXPORTER_OTLP_LOGS_HEADERS",
+                specificTimeoutEnvKey: "OTEL_EXPORTER_OTLP_LOGS_TIMEOUT");
+        });
 
         builder.Logging.AddOpenTelemetry(logging =>
         {
-            logging.SetResourceBuilder(GetResourceBuilder(otelOptions, resourceConfigurator));
+            logging.SetResourceBuilder(resourceBuilder);
             logging.IncludeFormattedMessage = logOptions?.IncludeFormattedMessage ?? false;
             logging.IncludeScopes = logOptions?.IncludeScopes ?? false;
-
-            if (!string.IsNullOrWhiteSpace(endpoint))
-            {
-                logging.AddOtlpExporter("logs", options => ApplyOtlpExporterOptions(options, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter));
-            }
 
             if (logOptions?.AddConsoleExporter ?? false)
             {
                 logging.AddConsoleExporter();
             }
 
-            configure?.Invoke(logging);
+            // Hook to allow the consumer to further configure otel logging
+            configureLogging?.Invoke(logging);
+
+            logging.AddOtlpExporter(signal, null as Action<OtlpExporterOptions>); // null is important here
         });
 
         return builder;
+    }
+
+    private static ResourceBuilder GetResourceBuilder(OTelOptions otelOptions, Func<ResourceBuilder, ResourceBuilder> configureResource = null)
+    {
+        var resourceBuilder = ResourceBuilder.CreateDefault().AddService(
+            serviceName: Environment.GetEnvironmentVariable("OTEL_SERVICE_NAME") ?? otelOptions.ServiceName ?? (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Name ?? "unknown",
+            serviceNamespace: Environment.GetEnvironmentVariable("OTEL_SERVICE_NAMESPACE") ?? otelOptions.ServiceNamespace ?? "unknown",
+            serviceVersion: (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version?.ToString() ?? "unknown",
+            serviceInstanceId: Environment.MachineName.ToLowerInvariant());
+
+        var attributes = otelOptions.Resource?.Attributes ?? [];
+
+        if (attributes.Any())
+        {
+            resourceBuilder.AddAttributes(attributes.Where(kv => !string.IsNullOrWhiteSpace(kv.Key)));
+        }
+
+        configureResource?.Invoke(resourceBuilder);
+
+        return resourceBuilder;
     }
 
     private static string GetOtlpProtocolValue(string config, string specificEnv, string defaultEnv)
@@ -257,18 +350,20 @@ public static class OTelExtensions
         return GetOtlpValue(config, specificEnv, defaultEnv)?.Replace("/", string.Empty);
     }
 
-    private static string GetOtlpEndpointValue(string protocol, string config, string specificEnv, string defaultEnv, string protobufPath)
+    private static string GetOtlpEndpointValue(string protocol, string configValue, string specificEnv, string defaultEnv, string signal)
     {
         var proto = Enum.TryParse<OtlpExportProtocol>(protocol?.ToString(), true, out var parsedProtocol)
             ? parsedProtocol
             : OtlpExportProtocol.Grpc;
 
-        var endpoint = GetOtlpValue(config, specificEnv, defaultEnv);
+        var endpoint = GetOtlpValue(configValue, specificEnv, defaultEnv);
 
-        if (proto == OtlpExportProtocol.HttpProtobuf && !string.IsNullOrWhiteSpace(endpoint) && !endpoint.EndsWith($"/v1/{protobufPath}", StringComparison.OrdinalIgnoreCase))
+        if (proto == OtlpExportProtocol.HttpProtobuf && !string.IsNullOrWhiteSpace(endpoint) && !endpoint.EndsWith($"/v1/{signal}", StringComparison.OrdinalIgnoreCase))
         {
             // Appending /v1/logs to the endpoint if using HTTP protocol and not already present
-            endpoint = endpoint.EndsWith("/") ? $"{endpoint}v1/{protobufPath}" : $"{endpoint}/v1/{protobufPath}";
+            endpoint = endpoint.EndsWith("/")
+                ? $"{endpoint}v1/{signal}"
+                : $"{endpoint}/v1/{signal}";
         }
 
         return endpoint;
@@ -278,27 +373,47 @@ public static class OTelExtensions
         ?? Environment.GetEnvironmentVariable(defaultEnv)
         ?? config?.ToString();
 
-    private static ResourceBuilder GetResourceBuilder(OTelOptions otelOptions, Func<ResourceBuilder, ResourceBuilder> configure = null)
+    private static void PostConfigureOtlpExporter(
+        IServiceProvider serviceProvider,
+        string endpoint,
+        string protocol,
+        string telemetryDiscriminator,
+        string specificHeadersEnvKey,
+        string specificTimeoutEnvKey)
     {
-        var resourceBuilder = ResourceBuilder.CreateDefault().AddService(
-            serviceName: otelOptions.ServiceName ?? (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Name,
-            serviceNamespace: otelOptions.ServiceNamespace,
-            serviceVersion: (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetName().Version?.ToString() ?? "unknown",
-            serviceInstanceId: Environment.MachineName.ToLowerInvariant());
+        // purposley reloading OTel options here because during telemetry initialization
+        // the options may not be fully bound and configured (post serviceprovider build)
+        var otelOptions = serviceProvider.GetRequiredService<OTelOptions>();
 
-        resourceBuilder.AddAttributes(
-        [
-            new("deployment.environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.ToLowerInvariant() ?? "unknown"),
-            new("host.host", Environment.MachineName.ToLowerInvariant()),
-            new("host.name", Environment.MachineName.ToLowerInvariant())
-        ]);
+        var headers = GetOtlpValue(
+            config: otelOptions.OtlpExporter?.Headers,
+            specificEnv: specificHeadersEnvKey,
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_HEADERS);
 
-        configure?.Invoke(resourceBuilder);
+        var timeoutMilliseconds = GetOtlpValue(
+            config: otelOptions.OtlpExporter?.TimeoutMilliseconds.ToString(),
+            specificEnv: specificTimeoutEnvKey,
+            defaultEnv: ENVKEV_OTEL_EXPORTER_OTLP_TIMEOUT);
 
-        return resourceBuilder;
+        var exporterOptions = serviceProvider.GetRequiredService<IOptionsMonitor<OtlpExporterOptions>>().Get(telemetryDiscriminator);
+        ApplyConfiguredOtlpExporterOptions(exporterOptions, endpoint, protocol, headers, timeoutMilliseconds, otelOptions.OtlpExporter);
+
+        // Allowing any reigstered IOtlpExporterConfigurator to further customize the exporter options
+        // This allows for custom implementations to be injected that cna pull secrets or other configuration
+        // Refactor: Might be better in the future to have a way that this only gets called once instead of for each telemetry type.
+        foreach (var configurator in serviceProvider.GetServices<IOtlpExporterConfigurator>())
+        {
+            _ = configurator.Configure(telemetryDiscriminator, exporterOptions);
+        }
     }
 
-    private static void ApplyOtlpExporterOptions(OtlpExporterOptions options, string endpoint, string protocol, string headers, string timeoutMilliseconds, OtlpExporterOptions configured)
+    private static void ApplyConfiguredOtlpExporterOptions(
+        OtlpExporterOptions options,
+        string endpoint,
+        string protocol,
+        string headers,
+        string timeoutMilliseconds,
+        OtlpExporterOptions configured)
     {
         options.Headers = headers ?? options.Headers;
         options.ExportProcessorType = configured?.ExportProcessorType ?? options.ExportProcessorType;
