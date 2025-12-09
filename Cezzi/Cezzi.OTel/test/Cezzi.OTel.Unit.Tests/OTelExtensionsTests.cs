@@ -1,16 +1,16 @@
 ﻿namespace Cezzi.OTel.Unit.Tests;
 
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Xunit;
 using Cezzi.OTel;
+using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
-using FluentAssertions;
-using OpenTelemetry.Trace;
-using OpenTelemetry.Metrics;
 using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Trace;
+using Xunit;
 
 public class OTelExtensionsTests
 {

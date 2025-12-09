@@ -1,6 +1,6 @@
 namespace Cezzi.Caching.Tests.Core;
-using Cezzi.Caching.Core;
 
+using Cezzi.Caching.Core;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;

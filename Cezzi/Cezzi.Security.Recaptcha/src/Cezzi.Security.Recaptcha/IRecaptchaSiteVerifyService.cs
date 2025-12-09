@@ -1,4 +1,5 @@
 ﻿namespace Cezzi.Security.Recaptcha;
+
 using System.Threading.Tasks;
 
 /// <summary>

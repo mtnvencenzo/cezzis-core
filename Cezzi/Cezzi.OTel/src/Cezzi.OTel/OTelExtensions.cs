@@ -256,6 +256,11 @@ public static class OTelExtensions
         ResourceBuilder resourceBuilder,
         Func<OpenTelemetryLoggerOptions, OpenTelemetryLoggerOptions> configureLogging = null)
     {
+        builder.Logging?
+            .AddFilter("System.Net.Http.HttpClient.OtlpMetricExporter", LogLevel.Warning)
+            .AddFilter("System.Net.Http.HttpClient.OtlpTraceExporter", LogLevel.Warning)
+            .AddFilter("System.Net.Http.HttpClient.OtlpLogExporter", LogLevel.Warning);
+
         var signal = "logs";
         var logOptions = otelOptions.Logs;
 
