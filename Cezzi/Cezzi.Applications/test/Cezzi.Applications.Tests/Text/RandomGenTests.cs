@@ -1,6 +1,6 @@
 ﻿namespace Cezzi.Applications.Tests.Text;
-using Cezzi.Applications.Text;
 
+using Cezzi.Applications.Text;
 using Cezzi.Applications.Text.Resources;
 using FluentAssertions;
 using System;

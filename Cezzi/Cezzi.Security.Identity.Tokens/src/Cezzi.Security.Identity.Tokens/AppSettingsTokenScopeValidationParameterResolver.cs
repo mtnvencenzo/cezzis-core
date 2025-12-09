@@ -1,4 +1,5 @@
 ﻿namespace Cezzi.Security.Identity.Tokens;
+
 using Cezzi.Security.Identity.Tokens.Jwt;
 using System;
 using System.Collections.Generic;

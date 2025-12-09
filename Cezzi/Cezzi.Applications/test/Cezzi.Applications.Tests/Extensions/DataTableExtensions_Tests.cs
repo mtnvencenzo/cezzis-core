@@ -15,7 +15,7 @@ public class DataTableExtensions_Tests
     {
         var table = new DataTable();
         table.AddColumn("col1").Should().BeSameAs(table);
-        table.Columns.Should().ContainSingle();
+        table.Columns.Count.Should().Be(1);
 
         var column = table.Columns["col1"];
         column.Should().NotBeNull();
@@ -27,7 +27,7 @@ public class DataTableExtensions_Tests
     {
         var table = new DataTable();
         table.AddColumn("col1", typeof(int)).Should().BeSameAs(table);
-        table.Columns.Should().ContainSingle();
+        table.Columns.Count.Should().Be(1);
 
         var column = table.Columns["col1"];
         column.Should().NotBeNull();
