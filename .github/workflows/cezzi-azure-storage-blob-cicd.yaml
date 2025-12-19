@@ -17,7 +17,7 @@ jobs:
       working_directory: 'Cezzi.Azure/Cezzi.Azure.Storage.Blob'
       environment_name: prd
       allow_push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main' }}
-      dotnet_version: '9.x'
+      dotnet_version: '10.x'
       nuget_file_path: './../../Nuget.Config'
       github_nuget_feed_name: 'github-mtnvencenzo'
       github_nuget_feed_source: 'https://nuget.pkg.github.com/mtnvencenzo/index.json'
