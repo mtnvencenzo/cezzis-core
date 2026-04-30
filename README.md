@@ -98,23 +98,6 @@ Before getting started with the framework, please review our [Environment Setup 
 ### OpenMarket
 - **Cezzi.OpenMarket**: SMS service integration with OpenMarket
 
-## Getting Started
-
-1. Choose the components you need for your project
-2. Install the required NuGet packages from GitHub Packages
-3. Follow the component-specific documentation for setup and usage
-
-Example installation:
-```shell
-dotnet add package Cezzi.Applications --source "github"
-dotnet add package Cezzi.Caching.Redis --source "github"
-dotnet add package Cezzi.Security --source "github"
-```
-
-## Contributing
-
-We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
