@@ -8,7 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\.github\workflows\cezzi-openmarket-cicd.yaml = ..\..\.github\workflows\cezzi-openmarket-cicd.yaml
-		..\..\Nuget.Config = ..\..\Nuget.Config
+		..\..\NuGet.Config = ..\..\NuGet.Config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B452A91B-643A-4E5D-A8E2-C9AE923665E9}"

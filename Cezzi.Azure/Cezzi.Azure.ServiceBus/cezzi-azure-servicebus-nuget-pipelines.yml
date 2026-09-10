@@ -51,7 +51,7 @@ stages:
         command: 'restore'
         projects: '$(Build.SourcesDirectory)/Cezzi.Azure/Cezzi.Azure.ServiceBus/Cezzi.Azure.ServiceBus.sln'
         feedsToUse: 'config'
-        nugetConfigPath: './Nuget.Config'
+        nugetConfigPath: './NuGet.Config'
 
     - task: DotNetCoreCLI@2
       displayName: 'Build'

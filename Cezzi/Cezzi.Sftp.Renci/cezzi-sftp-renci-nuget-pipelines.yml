@@ -51,7 +51,7 @@ stages:
         command: 'restore'
         projects: '$(Build.SourcesDirectory)/Cezzi/Cezzi.Sftp.Renci/Cezzi.Sftp.Renci.sln'
         feedsToUse: 'config'
-        nugetConfigPath: './Nuget.Config'
+        nugetConfigPath: './NuGet.Config'
 
     - task: DotNetCoreCLI@2
       displayName: 'Build'

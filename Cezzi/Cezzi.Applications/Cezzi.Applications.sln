@@ -14,7 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".sln", ".sln", "{04FDA196-3247-4789-B6F9-1837F1D42435}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\.github\workflows\cezzi-applications-cicd.yaml = ..\..\.github\workflows\cezzi-applications-cicd.yaml
-		..\..\Nuget.Config = ..\..\Nuget.Config
+		..\..\NuGet.Config = ..\..\NuGet.Config
 	EndProjectSection
 EndProject
 Global
