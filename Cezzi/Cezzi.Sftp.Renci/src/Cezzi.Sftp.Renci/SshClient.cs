@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
 
 /// <summary>
 /// 
@@ -46,7 +48,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(CreateDirectory) }
         });
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -64,7 +66,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh create directory operation failed");
-            throw new SftpException("Ssh create directory operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh create directory operation failed", ex);
         }
         finally
         {
@@ -82,7 +84,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(DeleteDirectory) }
         });
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -100,7 +102,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh delete directory operation failed");
-            throw new SftpException("Ssh delete directory operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh delete directory operation failed", ex);
         }
         finally
         {
@@ -215,7 +217,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(DeleteFile) }
         });
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -233,7 +235,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh file delete operation failed");
-            throw new SftpException("Ssh file delete operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh file delete operation failed", ex);
         }
         finally
         {
@@ -253,7 +255,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(RenameFile) }
         });
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -271,7 +273,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh file rename operation failed");
-            throw new SftpException("Ssh file rename operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh file rename operation failed", ex);
         }
         finally
         {
@@ -290,7 +292,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(GetFile) }
         });
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -329,7 +331,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh file open read operation failed");
-            throw new SftpException("Ssh file open read operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh file open read operation failed", ex);
         }
         finally
         {
@@ -348,7 +350,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(GetFileText) }
         });
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -369,7 +371,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh file read text operation failed");
-            throw new SftpException("Ssh file read text operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh file read text operation failed", ex);
         }
         finally
         {
@@ -390,7 +392,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(ListDirectory) }
         });
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -452,7 +454,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh list directory operation failed");
-            throw new SftpException("Ssh list directory operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh list directory operation failed", ex);
         }
         finally
         {
@@ -473,7 +475,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             { Monikers.SftpMonikers.SftpOperation, nameof(FileExists) }
         }))
         {
-            var client = this.Connect();
+            var client = this.OpenSftpClient();
 
             try
             {
@@ -484,7 +486,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "Ssh file read text operation failed");
-                throw new SftpException("Ssh file read text operation failed", ex);
+                throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh file read text operation failed", ex);
             }
             finally
             {
@@ -495,7 +497,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         return exists;
     }
 
-    private SftpClient Connect()
+    private SftpClient OpenSftpClient()
     {
         var connectionInfo = this.GetConnectionInfo();
 
@@ -567,7 +569,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         string remoteFilePath,
         bool overwriteIfExists = true)
     {
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         foreach (var stream in streams)
         {
@@ -592,7 +594,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "Ssh file upload operation failed");
-                throw new SftpException("Ssh file upload operation failed", ex);
+                throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh file upload operation failed", ex);
             }
             finally
             {
@@ -612,7 +614,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         stream.Flush();
         stream.Seek(0, SeekOrigin.Begin);
 
-        var client = this.Connect();
+        var client = this.OpenSftpClient();
 
         try
         {
@@ -643,7 +645,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
         catch (Exception ex)
         {
             this.logger.LogError(ex, "Ssh file upload operation failed");
-            throw new SftpException("Ssh file upload operation failed", ex);
+            throw new SftpException(global::Renci.SshNet.Sftp.StatusCode.Failure, "Ssh file upload operation failed", ex);
         }
         finally
         {
@@ -813,7 +815,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
     /// <inheritdoc/>
     public void EndDownloadFile(IAsyncResult asyncResult) => throw new NotImplementedException();
     /// <inheritdoc/>
-    public IEnumerable<global::Renci.SshNet.Sftp.SftpFile> EndListDirectory(IAsyncResult asyncResult) => throw new NotImplementedException();
+    public IEnumerable<global::Renci.SshNet.Sftp.ISftpFile> EndListDirectory(IAsyncResult asyncResult) => throw new NotImplementedException();
     /// <inheritdoc/>
     public IEnumerable<FileInfo> EndSynchronizeDirectories(IAsyncResult asyncResult) => throw new NotImplementedException();
     /// <inheritdoc/>
@@ -821,7 +823,7 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
     /// <inheritdoc/>
     public bool Exists(string path) => throw new NotImplementedException();
     /// <inheritdoc/>
-    public global::Renci.SshNet.Sftp.SftpFile Get(string path) => throw new NotImplementedException();
+    public global::Renci.SshNet.Sftp.ISftpFile Get(string path) => throw new NotImplementedException();
     /// <inheritdoc/>
     public global::Renci.SshNet.Sftp.SftpFileAttributes GetAttributes(string path) => throw new NotImplementedException();
     /// <inheritdoc/>
@@ -833,9 +835,9 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
     /// <inheritdoc/>
     public DateTime GetLastWriteTimeUtc(string path) => throw new NotImplementedException();
     /// <inheritdoc/>
-    public global::Renci.SshNet.Sftp.SftpFileSytemInformation GetStatus(string path) => throw new NotImplementedException();
+    public global::Renci.SshNet.Sftp.SftpFileSystemInformation GetStatus(string path) => throw new NotImplementedException();
     /// <inheritdoc/>
-    public IEnumerable<global::Renci.SshNet.Sftp.SftpFile> ListDirectory(string path, Action<int> listCallback = null) => throw new NotImplementedException();
+    public IEnumerable<global::Renci.SshNet.Sftp.ISftpFile> ListDirectory(string path, Action<int> listCallback = null) => throw new NotImplementedException();
     /// <inheritdoc/>
     public global::Renci.SshNet.Sftp.SftpFileStream Open(string path, FileMode mode) => throw new NotImplementedException();
     /// <inheritdoc/>
@@ -887,5 +889,41 @@ public class SshClient(SftpConfig sftpConfig, ILogger logger) : ISftpClient
     public void WriteAllText(string path, string contents) => throw new NotImplementedException();
     /// <inheritdoc/>
     public void WriteAllText(string path, string contents, Encoding encoding) => throw new NotImplementedException();
+
+    // Explicit IBaseClient members are stubbed; this class does not implement the full SSH.NET client contract, only the members used above.
+    ConnectionInfo IBaseClient.ConnectionInfo => throw new NotImplementedException();
+    bool IBaseClient.IsConnected => throw new NotImplementedException();
+    TimeSpan IBaseClient.KeepAliveInterval { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    event EventHandler<ExceptionEventArgs> IBaseClient.ErrorOccurred { add => throw new NotImplementedException(); remove => throw new NotImplementedException(); }
+    event EventHandler<HostKeyEventArgs> IBaseClient.HostKeyReceived { add => throw new NotImplementedException(); remove => throw new NotImplementedException(); }
+    event EventHandler<SshIdentificationEventArgs> IBaseClient.ServerIdentificationReceived { add => throw new NotImplementedException(); remove => throw new NotImplementedException(); }
+    void IBaseClient.Connect() => throw new NotImplementedException();
+    Task IBaseClient.ConnectAsync(CancellationToken cancellationToken) => throw new NotImplementedException();
+    void IBaseClient.Disconnect() => throw new NotImplementedException();
+    void IBaseClient.SendKeepAlive() => throw new NotImplementedException();
+    void IDisposable.Dispose() => throw new NotImplementedException();
+
+    // Explicit ISftpClient async members are stubbed; not used by this implementation.
+    Task ISftpClient.ChangeDirectoryAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.CreateDirectoryAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.DeleteAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.DeleteDirectoryAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.DeleteFileAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.DownloadFileAsync(string path, Stream output, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.DownloadFileAsync(string path, Stream output, IProgress<DownloadFileProgressReport> downloadProgress, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task<bool> ISftpClient.ExistsAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task<global::Renci.SshNet.Sftp.ISftpFile> ISftpClient.GetAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task<global::Renci.SshNet.Sftp.SftpFileAttributes> ISftpClient.GetAttributesAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task<global::Renci.SshNet.Sftp.SftpFileSystemInformation> ISftpClient.GetStatusAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    IAsyncEnumerable<global::Renci.SshNet.Sftp.ISftpFile> ISftpClient.ListDirectoryAsync(string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task<global::Renci.SshNet.Sftp.SftpFileStream> ISftpClient.OpenAsync(string path, FileMode mode, FileAccess access, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.RenameFileAsync(string oldPath, string newPath, CancellationToken cancellationToken) => throw new NotImplementedException();
+    void ISftpClient.SetLastAccessTime(string path, DateTime lastAccessTime) => throw new NotImplementedException();
+    void ISftpClient.SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc) => throw new NotImplementedException();
+    void ISftpClient.SetLastWriteTime(string path, DateTime lastWriteTime) => throw new NotImplementedException();
+    void ISftpClient.SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc) => throw new NotImplementedException();
+    Task ISftpClient.UploadFileAsync(Stream input, string path, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.UploadFileAsync(Stream input, string path, IProgress<UploadFileProgressReport> uploadProgress, CancellationToken cancellationToken) => throw new NotImplementedException();
+    Task ISftpClient.UploadFileAsync(Stream input, string path, bool canOverride, IProgress<UploadFileProgressReport> uploadProgress, CancellationToken cancellationToken) => throw new NotImplementedException();
 }
 
